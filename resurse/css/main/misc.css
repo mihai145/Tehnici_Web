@@ -1,0 +1,38 @@
+/* Ascundem navigatorul simplificat (pentru printare) in browser */
+#print-nav {
+    display: none;
+}
+
+/* Ascundem banner-ul in browser */
+#banner {
+    display: none;
+}
+
+/* Ascundem watermark-ul (pentru printare) in browser*/
+#watermark {
+    display: none;
+}
+
+/* hr stilizat */
+.hr-main {
+    width: 250px;
+    background-color: var(--culoare_text);
+    height: 3px;
+    overflow: visible;
+}
+
+.hr-main::before {
+    content: "*";
+    font-size: 30px;
+    position: relative;
+    left: -15px;
+    bottom: 12px;
+}
+
+.hr-main::after {
+    content: "*";
+    font-size: 30px;
+    position: relative;
+    left: 238px;
+    bottom: 12px;
+}

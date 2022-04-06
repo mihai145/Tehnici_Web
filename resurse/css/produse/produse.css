@@ -1,0 +1,19 @@
+#produse {
+    padding: var(--section-padding);
+}
+
+.produs {
+    padding: var(--section-padding);
+    margin-bottom: var(--section-padding);
+
+    border: 2px solid var(--culoare_text);
+    border-radius: 10px;
+}
+
+.val-nume {
+    color: var(--culoare_text);
+}
+
+#produse a {
+    text-decoration: none;
+}

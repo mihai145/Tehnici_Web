@@ -1,0 +1,10 @@
+section {
+    padding: var(--section-padding);
+}
+
+#art-produs {
+    padding: var(--section-padding);
+
+    border: 2px solid var(--culoare_text);
+    border-radius: 10px;
+}

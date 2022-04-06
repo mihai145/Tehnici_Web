@@ -1,0 +1,27 @@
+{
+  "cale_baza": "resurse/imagini/erori",
+  "erori": [
+    {
+      "identificator": 404,
+      "status": true,
+      "titlu": "Eroare 404",
+      "text": "Nu exista pagina pe server!",
+      "imagine": "lupa.png"
+    },
+    {
+      "identificator": 403,
+      "status": true,
+      "titlu": "Eroare 403",
+      "text": "Nu ai destule permisiuni!",
+      "imagine": "interzis.png"
+    },
+    {
+      "identificator": 1,
+      "status": false,
+      "titlu": "Site în lucru!",
+      "text": "Multumim pentru intelegere!",
+      "imagine": "interzis.png"
+    }
+  ]
+}
+  

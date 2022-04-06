@@ -1,0 +1,113 @@
+#container-galerie-statica {
+  padding: 10px;
+  overflow: hidden;
+}
+
+#galerie-statica {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 10px;
+  width: 100%;
+  /* Counter imagini */
+  counter-reset: nr_imagini;
+}
+#galerie-statica figure {
+  margin: 0;
+  padding: 0;
+  /* Efecte hover */
+}
+#galerie-statica figure:hover figcaption {
+  background-color: var(--culoare_text);
+  color: var(--culoare_highlight);
+}
+#galerie-statica figure:hover img {
+  transform: scale(130%) translateY(-11.53%);
+  /* (translateY / 100) * scale = (scale - 100) / 2 */
+}
+#galerie-statica figure * {
+  transition: all 1250ms linear;
+}
+#galerie-statica img {
+  width: 100%;
+  height: 200px;
+}
+#galerie-statica figcaption {
+  text-align: center;
+  /* Afisam counterul in descrierea fiecarei imagini */
+}
+#galerie-statica figcaption::before {
+  counter-increment: nr_imagini;
+  content: counter(nr_imagini, lower-alpha) ")";
+}
+
+/* Galerie pentru ecran mare */
+@media screen and (min-width: 1201px) {
+  /* primele 4 imagini */
+  #galerie-statica figure:nth-child(1) {
+    grid-area: 1/1/2/2;
+  }
+
+  #galerie-statica figure:nth-child(2) {
+    grid-area: 1/2/2/3;
+  }
+
+  #galerie-statica figure:nth-child(3) {
+    grid-area: 1/3/2/4;
+  }
+
+  #galerie-statica figure:nth-child(4) {
+    grid-area: 1/4/2/5;
+  }
+
+  /* imaginile 5 si 6 */
+  #galerie-statica figure:nth-child(5) {
+    grid-area: 2/1/3/2;
+  }
+
+  #galerie-statica figure:nth-child(6) {
+    grid-area: 2/4/3/5;
+  }
+
+  /* ultimele 4 imagini */
+  #galerie-statica figure:nth-child(7) {
+    grid-area: 3/1/4/2;
+  }
+
+  #galerie-statica figure:nth-child(8) {
+    grid-area: 3/2/4/3;
+  }
+
+  #galerie-statica figure:nth-child(9) {
+    grid-area: 3/3/4/4;
+  }
+
+  #galerie-statica figure:nth-child(10) {
+    grid-area: 3/4/4/5;
+  }
+}
+/* Galerie pentru ecran mediu */
+@media screen and (max-width: 1200px) {
+  #galerie-statica {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  #galerie-statica figure {
+    text-align: center;
+  }
+  #galerie-statica img {
+    max-width: 300px;
+  }
+}
+/* Galerie pentru ecran mic */
+@media screen and (max-width: 700px) {
+  #galerie-statica {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  #galerie-statica figure {
+    text-align: center;
+  }
+  #galerie-statica img {
+    max-width: 300px;
+  }
+}
+
+/*# sourceMappingURL=galerie_statica.css.map */

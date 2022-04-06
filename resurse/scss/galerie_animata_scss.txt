@@ -1,0 +1,118 @@
+@use "sass:math";
+@use "sass:list";
+
+$nr_imag: <%= nr_imag %>;
+$pozitii_imagini: <%= pozitii_imagini%>;
+
+#container-galerie-animata {
+  width: 400px;
+  height: 300px;
+  position: relative;
+
+  border: 10px solid transparent;
+  border-image: url("/resurse/imagini/background_tabel.png") 10;
+
+  overflow: hidden;
+
+  * {
+    margin: 0;
+    padding: 0;
+  }
+
+  figure {
+    position: relative;
+    width: 400px;
+    height: 300px;
+    text-align: center;
+
+    img {
+      width: 400px;
+      height: 300px;
+    }
+
+    figcaption {
+      /* Pozitionare in partea de jos a figure-ului */
+      position: absolute;
+      bottom: 0;
+
+      /* Centrare pe orizontala */
+      width: 100%;
+      margin: auto;
+
+      background-color: var(--culoare_background);
+      color: var(--culoare_text);
+      font-weight: bold;
+    }
+  }
+}
+
+#galerie-animata {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  display:grid;
+
+  width: 1200px;
+  grid-template-columns: 400px 400px 400px;
+  grid-template-rows: repeat(#{math.div($nr_imag, 3)}, 300px);
+  grid-row-gap: 0;
+  grid-column-gap: 0;
+
+  animation: grid_animat linear 100s infinite;
+
+  &:hover {
+    animation-play-state: paused;
+  }
+}
+
+/* Animatie grid */
+@keyframes grid_animat {
+    @for $i from 1 through $nr_imag {
+        #{($i - 1) * math.div(100, $nr_imag)}% {
+            top: #{-300 * (list.nth(list.nth($pozitii_imagini, $i), 1) - 1)}px;
+            left: #{-400 * (list.nth(list.nth($pozitii_imagini, $i), 2) - 1)}px;
+            transform: none;
+        }
+
+        #{($i - 1) * math.div(100, $nr_imag) + math.div(math.div(100, $nr_imag), 2)}% {
+            top: #{-300 * (list.nth(list.nth($pozitii_imagini, $i), 1) - 1)}px;
+            left: #{-400 * (list.nth(list.nth($pozitii_imagini, $i), 2) - 1)}px;
+            transform: none;
+        }
+
+        #{($i - 1) * math.div(100, $nr_imag) + math.div(math.div(100, $nr_imag), 2) + math.div(math.div(100, $nr_imag), 10)}% {
+            top: #{-300 * (list.nth(list.nth($pozitii_imagini, $i), 1) - 1)}px;
+            left: #{-400 * (list.nth(list.nth($pozitii_imagini, $i), 2) - 1)}px;
+            transform-origin: #{400 * (list.nth(list.nth($pozitii_imagini, $i), 2) - 1) + 200}px #{300 * (list.nth(list.nth($pozitii_imagini, $i), 1) - 1) + 150}px;
+            transform: rotate(360deg);
+        }
+
+        #{($i - 1) * math.div(100, $nr_imag) + math.div(math.div(100, $nr_imag), 2) + math.div(math.div(100, $nr_imag), 5)}% {
+            top: #{-300 * (list.nth(list.nth($pozitii_imagini, $i), 1) - 1)}px;
+            left: #{-400 * (list.nth(list.nth($pozitii_imagini, $i), 2) - 1)}px;
+            transform-origin: #{400 * (list.nth(list.nth($pozitii_imagini, $i), 2) - 1) + 200}px #{300 * (list.nth(list.nth($pozitii_imagini, $i), 1) - 1) + 150}px;
+            transform: rotate(-360deg);
+        }
+
+        #{($i - 1) * math.div(100, $nr_imag) + math.div(math.div(100, $nr_imag), 2) + math.div(math.div(100, $nr_imag), 5) + 0.001}% {
+            top: #{-300 * (list.nth(list.nth($pozitii_imagini, $i), 1) - 1)}px;
+            left: #{-400 * (list.nth(list.nth($pozitii_imagini, $i), 2) - 1)}px;
+            transform: none;
+        }
+
+      }
+
+    100% {
+        top: 0;
+        left: 0;
+        transform: none;
+    }
+}
+
+/* Ascundem galeria animata pe ecran mediu si mic */
+@media screen and (max-width: 1200px) {
+  #container-galerie-animata {
+    display: none;
+  }
+}

@@ -1,0 +1,77 @@
+/* Tabel pagina principala */
+#tabel-scroll-container {
+    max-width: 400px;
+    margin: 0;
+    padding: 10px;
+}
+
+#tabel-container {
+    width: 500px;
+    margin: 0;
+    padding: 0;
+    --table-border-radius: 12px;
+    border-top: 2px solid var(--culoare_text);
+    border-radius: var(--table-border-radius);
+    overflow: hidden;
+}
+
+#tabel-main {
+    border-collapse: collapse;
+}
+
+#tabel-main td, th {
+    padding: 6px;
+    border: 2px solid var(--culoare_text);
+    text-align: center;
+}
+
+#tabel-main > caption {
+    caption-side: bottom;
+    text-align: right;
+}
+
+/* Efect background celula */
+#tabel-container > #tabel-main > tbody > tr > td:hover {
+    background-color: #FFDC00; /* auriu */
+    transition: all var(--durata-animatie) linear;
+}
+
+/* Efect background table row */
+#tabel-main tr:nth-child(odd):hover > td:nth-child(n+2) {
+    background-color: #AAAAAA; /* gri */
+    transition: all var(--durata-animatie) linear;
+}
+
+#tabel-main tr:nth-child(even):hover > td:nth-child(n+1) {
+    background-color: #AAAAAA; /* gri */
+    transition: all var(--durata-animatie) linear;
+}
+
+/* Background pentru thead si tfoot */
+#tabel-main > thead, tfoot {
+    background-color: var(--culoare_secundara);
+}
+
+/* Background alternant coloane */
+#tabel-main > tbody > tr:nth-child(odd) > td:nth-child(odd) {
+    background-color: var(--culoare_highlight);
+}
+
+#tabel-main > tbody > tr:nth-child(even) > td:nth-child(even) {
+    background-color: var(--culoare_highlight);
+}
+
+#tabel-main > tbody > tr:nth-child(odd) > td:nth-child(even) {
+    background-color: var(--culoare_border);
+}
+
+#tabel-main > tbody > tr:nth-child(even) > td:nth-child(odd) {
+    background-color: var(--culoare_border);
+}
+
+/* Tabel pentru ecran mediu */
+@media screen and (max-width: 900px) and (min-width: 700px) {
+    #tabel-scroll-container {
+        width: 250px;
+    }
+}

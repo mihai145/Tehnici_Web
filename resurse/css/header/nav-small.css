@@ -1,0 +1,130 @@
+/* Container navbar */
+#nav-container {
+    --dimensiune-hamburger: 30px;
+    --offset-hamburger: 10px;
+    /* preferabil dimensiune-hamburger/3 */
+    background: var(--culoare_border);
+    margin: 0;
+    padding: 0;
+}
+
+#nav-container > i {
+    /* Pozitionam iconul hamburger peste checkbox */
+    position: absolute;
+    top: var(--offset-hamburger);
+    left: var(--offset-hamburger);
+    height: var(--dimensiune-hamburger);
+    pointer-events: none;
+}
+
+/* Buton meniu hamburger */
+#hamburger-icon {
+    display: inline-block;
+    height: var(--dimensiune-hamburger);
+    width: var(--dimensiune-hamburger);
+    opacity: 0;
+}
+
+#hamburger-icon:checked ~ #nav {
+    /* Afisam meniul cand apasam pe hamburger */
+    display: block;
+}
+
+/* Ascundem textul pentru optiunea "acasa" */
+#home-btn-text {
+    display: none;
+}
+
+#nav {
+    --inaltime-buton: 30px;
+    --minus-inaltime-buton: -30px;
+    background-color: var(--culoare_border);
+    height: var(--inaltime-buton);
+    position: relative;
+    z-index: 5;
+    font-size: var(--font-large);
+    display: none;
+    text-align: center;
+    animation: drop-hamburger var(--durata-animatie) linear;
+}
+
+/* Lista neordonata principala */
+#nav-list {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+#nav-list > li {
+    /* Link-urile principale */
+    background-color: var(--culoare_border);
+    list-style-type: none;
+    width: 100%;
+    height: var(--inaltime-buton);
+}
+
+#nav-list li > a, #nav-list div {
+    /* Butoanele (din meniul principal si cele secundare) */
+    padding-left: 6px;
+    color: var(--culoare_text);
+    font-weight: bold;
+    line-height: var(--inaltime-buton);
+    text-decoration: none;
+}
+
+#nav-list .submenu > li {
+    /* Link-urile secundare */
+    background-color: var(--culoare_border);
+    list-style-type: none;
+    width: 100%;
+    height: var(--inaltime-buton);
+}
+
+#nav-list .submenu li > a {
+    /* Butoanele din meniul secundar */
+    text-decoration: underline 2px;
+    text-decoration-color: transparent;
+}
+
+#nav-list li:hover {
+    /* Animatie background pentru toate butoanele */
+    background-color: var(--culoare_secundara);
+    transition: background-color var(--durata-animatie) linear;
+}
+
+/* Submeniul se deschide in momentul hover-ului */
+.submenu-head:hover .submenu {
+    display: block;
+}
+
+/* Lista neordonata secundara */
+.submenu {
+    margin: 0;
+    padding: 0;
+    display: none;
+    transform-origin: top;
+    animation: drop-down var(--durata-animatie) linear;
+    position: relative;
+    z-index: 10;
+}
+
+/* Animatie dropdown */
+@keyframes drop-down {
+    0% {
+        transform: scaleY(0);
+    }
+    100% {
+        transform: scaleY(1);
+    }
+}
+
+/* Animatie deschidere hamburger */
+@keyframes drop-hamburger {
+    0% {
+        transform: scaleX(0);
+    }
+    100% {
+        transform: scaleX(1);
+    }
+}

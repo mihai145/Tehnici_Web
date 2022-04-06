@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+
+<html lang="ro">
+
+<head>
+    <title>Cartianul</title>
+    <meta
+            name="keywords"
+            content="carti, magazin, literatura, beletristica, poezie, SF"
+    />
+
+    <!--Metainformatii & favico-->
+    <%- include("../fragmente/head.ejs"); %>
+
+    <!--CSS layout & printare -->
+    <link href="/resurse/css/main/layout.css" rel="stylesheet" type="text/css"/>
+
+    <!--CSS tabel-->
+    <link href="/resurse/css/main/tabel.css" rel="stylesheet" type="text/css"/>
+
+    <!--CSS Iframe -->
+    <link href="/resurse/css/main/iframe.css" rel="stylesheet" type="text/css"/>
+
+    <!--CSS subtitrari-->
+    <link href="/resurse/css/main/subtitrari.css" rel="stylesheet" type="text/css"/>
+
+    <!--CSS watermark, hr-->
+    <link href="/resurse/css/main/misc.css" rel="stylesheet" type="text/css"/>
+
+    <!--CSS galerie statica-->
+    <link href="/resurse/scss/galerie_statica.css" rel="stylesheet" type="text/css"/>
+
+    <!--CSS galerie animata-->
+    <link href="/resurse/scss/galerie_animata.css" rel="stylesheet" type="text/css"/>
+
+</head>
+
+<body>
+
+<!--Header-->
+<%- include("../fragmente/header.ejs"); %>
+<ul id="print-nav">
+    <li>Acasa</li>
+    <li>Pagini</li>
+    <li>Sectiuni</li>
+    <li>Despre</li>
+    <li>Cos</li>
+</ul>
+<div id="banner">
+    <h3>Acesta este un proiect scolar</h3>
+</div>
+
+<main>
+
+    <div id="watermark">
+        <p>
+            Oprea
+            <br/>
+            Mihai Adrian
+        </p>
+    </div>
+
+    <!--    Sectiunea pentru prezentare-->
+    <section id="prezentare">
+        <h2>
+            Bine ați venit la magazinul Cartianul. Printre cărți, totul este mai
+            frumos!
+        </h2>
+
+        <p>Aici puteți găsi tot ceea ce doriți. În materie de literatură!</p>
+
+        <ol>
+            <li>Literatură clasică</li>
+            <li>Poezie</li>
+            <li>Beletristică</li>
+            <li>SF</li>
+            <li>Istorie</li>
+            <li>Literatură străină</li>
+        </ol>
+
+        <!-- Video-->
+        <video width="800" height="450" controls="controls" poster="resurse/imagini/poster-video.jpg" preload="auto">
+            <source src="resurse/video/video-main.mp4" type="video/mp4">
+            <source src="resurse/video/video-main.mkv" type="video/mkv">
+            <track default src="resurse/subtitrari/romana.vtt" kind="captions" srclang="ro" label="romana"/>
+            <track src="resurse/subtitrari/english.vtt" kind="captions" srclang="en" label="english"/>
+        </video>
+
+    </section>
+
+    <!--    Sectiunea pentru tabel-->
+    <section id="tabel">
+
+        <div id="tabel-scroll-container">
+            <div id="tabel-container">
+                <table id="tabel-main">
+                    <caption>Actualizat 12.03.2022</caption>
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th colspan="2">Literatură română</th>
+                        <th colspan="2">Literatură străină</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr>
+                        <td rowspan="2">Cărți</td>
+                        <td>1+1>2</td>
+                        <td>Onirica</td>
+                        <td>Adevărurile Noastre</td>
+                        <td>Totul e vindecare!</td>
+                    </tr>
+
+                    <tr>
+                        <td>Cred în fericire</td>
+                        <td>Old Touch</td>
+                        <td>Aurit</td>
+                        <td>Regulile Jocului</td>
+                    </tr>
+
+                    <tr>
+                        <td rowspan="2">Autori</td>
+                        <td>Dan Beldean</td>
+                        <td>Maria Dinu</td>
+                        <td>Amor Towles</td>
+                        <td>Laura Wolfe</td>
+                    </tr>
+
+                    <tr>
+                        <td>Lucian Filip</td>
+                        <td>Părintele Proclu</td>
+                        <td>Stanislaw Lem</td>
+                        <td>Rachel Hartman</td>
+                    </tr>
+                    </tbody>
+
+                    <tfoot>
+                    <tr>
+                        <td colspan="5">Cele mai noi apariții din magazin!</td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+        <br/>
+        <br/>
+        <p>
+            Maecenas viverra lacinia libero, ut ornare dui facilisis commodo. In accumsan imperdiet molestie. Aenean
+            convallis quam nec nunc mollis ultrices. Pellentesque vulputate nec mi non dignissim. Etiam aliquam nulla
+            ipsum, non dapibus dui ullamcorper id. Nam ipsum felis, dictum eget erat eu, faucibus imperdiet est. Morbi
+            id facilisis turpis. Integer id ultricies elit, non malesuada purus. Nulla cursus molestie purus, in
+            vestibulum lacus aliquam nec. Suspendisse potenti.
+        </p>
+    </section>
+
+    <!--    Sectiunea pentru calendar-->
+    <section id="calendar">
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sed accumsan quam. Sed posuere tincidunt
+            pharetra. Nunc elementum, ante id condimentum finibus, ligula erat porta libero, in vehicula ligula leo eget
+            nibh. Sed ut iaculis nisl. Vivamus sollicitudin, sem vel fringilla luctus, quam velit pharetra risus, sit
+            amet tempor eros nisl sed quam. Vivamus dapibus nulla nec sapien porta, eget tempus lorem malesuada.
+            Pellentesque sed lorem urna. Vestibulum eget ultricies massa. Integer fringilla sapien vel mauris consequat,
+            viverra fringilla sem malesuada. Cras imperdiet purus a dui tincidunt, a convallis ex fermentum. Duis mattis
+            ut ipsum eget blandit. Nulla ut condimentum ante, sit amet consectetur eros. Vestibulum vel justo tempor,
+            fermentum urna ut, dignissim lacus.
+
+        <hr class="hr-main"/>
+
+        Quisque diam lacus, porttitor nec lobortis at, sagittis sit amet massa. Vivamus suscipit sagittis cursus. Ut
+        at ex felis. Donec laoreet risus ipsum, eget viverra quam rhoncus mollis. Nulla at leo est. Praesent purus
+        quam, ultrices a erat id, malesuada fringilla mi. Nunc rhoncus a mi ac tincidunt. Etiam eget euismod tellus.
+        Pellentesque scelerisque mollis leo vitae mollis.
+    </section>
+
+    <!--    Sectiunea pentru anunturi-->
+    <section id="anunturi">
+        <details>
+            <summary>Carte cadou doar saptamana aceasta <i class="fa-solid fa-box-open"></i></summary>
+            <p>
+                Doar saptamana aceasta, puteti descarca (format PDF) cartea
+                <q>Inspiratie pentru o zi reusita</q> gratis de
+                <a href="/resurse/pdf/inspiratie-pentru-o-zi-reusita.pdf" download>aici</a>
+                <br/>
+                Cu totii speram ca dumneavoastra sa fiti inspirati, voiosi si
+                deschisi spre literatura!
+            </p>
+        </details>
+        <br/>
+        <details>
+            <summary>Noile promotii de pe Libris!</summary>
+            <p>
+                Colegii nostrii de la
+                <a href="https://www.libris.ro/promotiileLunii" target="_blank"
+                >Libris</a
+                >
+                au reduceri 2+1 gratis in luna februarie.
+                <br/>
+                Nu rata oportunitatea de a citi ceea ce iubesti, acum cu pana la
+                50% mai ieftin!
+            </p>
+        </details>
+        <br/>
+        <details>
+            <summary>Evenimente la Biblioteca Nationala</summary>
+            <p>
+                Urmariti cu atentie sectiunea <q>Noutati</q> a paginii
+                <a href="https://www.bibnat.ro/" target="_blank"
+                ><abbr title="Biblioteca nationala">BN</abbr>.</a>
+                <br/>
+                Luna martie se anunta una plina de evenimente culturale, la care
+                participa invitati cu renume si cu multe povesti de spus
+                publicului interesat.
+            </p>
+        </details>
+
+    </section>
+
+    <!--    Sectiunea pentru utilizatori-->
+    <section id="utilizatori">
+        <p>
+            IP utilizator: <%= ip %>
+            <br/>
+            <br/>
+
+            Vectorul [
+            <% let sum = 0; %>
+            <% for(let i = 0; i < vector.length; i++) { %>
+                <%- vector[i] %>,
+                <% sum += vector[i] %>
+            <% } %>
+            ] are suma elementelor <%- sum %>.
+
+            <br/>
+            <br/>
+            Ut at aliquam purus. Fusce vitae nisl vitae arcu imperdiet lacinia at at massa. Sed efficitur arcu id turpis
+            rutrum commodo. Vestibulum semper orci tempus tincidunt lobortis. In hac habitasse platea dictumst. Fusce
+            faucibus consectetur lacus, vel accumsan mauris mollis a. Quisque auctor ornare est, in volutpat magna
+            egestas eu. In blandit convallis tincidunt. Nunc porttitor quis ex id imperdiet. Quisque in nulla eget arcu
+            aliquet ultricies eu a lacus. Vestibulum fringilla efficitur facilisis. Suspendisse dignissim feugiat tellus
+            sed pellentesque. Suspendisse potenti. Integer sit amet mollis dui. Ut nec sagittis nisl.
+            <br/>
+            Phasellus non pellentesque augue. Nullam convallis ante et diam tristique iaculis. Ut viverra nulla elit, et
+            sagittis massa egestas tristique. Pellentesque a auctor lectus. Etiam interdum ex non urna aliquet, ac
+            consectetur velit sodales. Aenean at mauris est. Nam a est maximus, vehicula quam a, porttitor nulla.
+            Suspendisse potenti. Mauris lacinia et est sit amet sodales. Quisque et ligula ut lorem ullamcorper mattis
+            in a velit. Nam rhoncus dignissim nisl, nec sodales est rutrum dapibus. Mauris ut accumsan velit, nec rutrum
+            libero. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+            Vestibulum magna ligula, gravida nec justo eu, rhoncus venenatis felis.
+        </p>
+    </section>
+
+    <!--    Sectiunea pentru info-user-->
+    <section id="info-user">
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas suscipit placerat eros, vitae cursus nisl
+            faucibus sed. Vestibulum porttitor aliquam ullamcorper. Praesent tincidunt eleifend eros, id facilisis diam
+            faucibus quis. Aliquam erat volutpat. Etiam consectetur urna sit amet elit porta molestie. Maecenas
+            tincidunt porta eros. Pellentesque elementum sit amet mi id porttitor. Praesent molestie magna orci, vitae
+            molestie mauris placerat at. Praesent sed massa id nisl placerat egestas. Fusce vulputate cursus euismod.
+            Aenean ultrices justo et est convallis fringilla. Aliquam efficitur nec massa et faucibus. Integer eleifend
+            lorem ac aliquam faucibus. Vivamus vel turpis elementum, faucibus libero eu, lobortis neque. Vestibulum
+            fringilla in risus eget bibendum.
+            <br/>
+            Ut at aliquam purus. Fusce vitae nisl vitae arcu imperdiet lacinia at at massa. Sed efficitur arcu id turpis
+            rutrum commodo. Vestibulum semper orci tempus tincidunt lobortis. In hac habitasse platea dictumst. Fusce
+            faucibus consectetur lacus, vel accumsan mauris mollis a. Quisque auctor ornare est, in volutpat magna
+            egestas eu. In blandit convallis tincidunt. Nunc porttitor quis ex id imperdiet. Quisque in nulla eget arcu
+            aliquet ultricies eu a lacus. Vestibulum fringilla efficitur facilisis. Suspendisse dignissim feugiat tellus
+            sed pellentesque. Suspendisse potenti. Integer sit amet mollis dui. Ut nec sagittis nisl.
+        </p>
+    </section>
+
+    <!--    Sectiunea pentru info-server-->
+    <section id="info-server">
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas suscipit placerat eros, vitae cursus nisl
+            faucibus sed. Vestibulum porttitor aliquam ullamcorper. Praesent tincidunt eleifend eros, id facilisis diam
+            faucibus quis. Aliquam erat volutpat. Etiam consectetur urna sit amet elit porta molestie. Maecenas
+            tincidunt porta eros. Pellentesque elementum sit amet mi id porttitor. Praesent molestie magna orci, vitae
+            molestie mauris placerat at. Praesent sed massa id nisl placerat egestas. Fusce vulputate cursus euismod.
+            Aenean ultrices justo et est convallis fringilla. Aliquam efficitur nec massa et faucibus. Integer eleifend
+            lorem ac aliquam faucibus. Vivamus vel turpis elementum, faucibus libero eu, lobortis neque. Vestibulum
+            fringilla in risus eget bibendum.
+            <br/>
+            Ut at aliquam purus. Fusce vitae nisl vitae arcu imperdiet lacinia at at massa. Sed efficitur arcu id turpis
+            rutrum commodo. Vestibulum semper orci tempus tincidunt lobortis. In hac habitasse platea dictumst. Fusce
+            faucibus consectetur lacus, vel accumsan mauris mollis a. Quisque auctor ornare est, in volutpat magna
+            egestas eu. In blandit convallis tincidunt. Nunc porttitor quis ex id imperdiet. Quisque in nulla eget arcu
+            aliquet ultricies eu a lacus. Vestibulum fringilla efficitur facilisis. Suspendisse dignissim feugiat tellus
+            sed pellentesque. Suspendisse potenti. Integer sit amet mollis dui. Ut nec sagittis nisl.
+        </p>
+    </section>
+
+    <!--    Sectiunea pentru diverse-->
+    <section id="diverse">
+
+        <section>
+            <h3>Ultimele noutati!</h3>
+            <p>
+                Literatura zilei de azi nu incanta sa fascineze si sa surprinda.
+                <br/>
+                Daca doriti sa descoperiti cele mai noi <b>bestsellere</b>, magazinul
+                Cartianul este pentru dumneavoastra.
+            </p>
+            <p>
+                Lunar, peste 100 dintre cele mai populare volume de literatura
+                romana si universala isi fac loc pe rafturile virtuale ale
+                magazinului Cartianul
+            </p>
+            <p>
+                Aveti vreo sugestie de carte pe care o doriti in stoc? Nu ezitati sa
+                ne contactati:...
+            </p>
+            <br/>
+
+            <div id="iframe-container">
+                <div>
+                    <iframe
+                            width="400"
+                            height="400"
+                            src="https://recorder.ro/despre-pandemonie-si-speranta-un-dialog-cu-mircea-cartarescu/"
+                            name="ifr"
+                    >Podcast Mircea Cartarescu
+                    </iframe
+                    >
+                </div>
+                <div id="iframe-controls">
+                    <a href="https://www.youtube.com/embed/leUVSVOyBIA?autoplay=1&mute=1"
+                       target="ifr" class="iframe-button"
+                    >Mircea Cartarescu</a>
+                    <a href="https://www.youtube.com/embed/UI4VDZNyL-Y?autoplay=1&mute=1"
+                       target="ifr" class="iframe-button"
+                    >
+                        George <br/> Orwell
+                    </a>
+                </div>
+            </div>
+
+        </section>
+
+        <section id="s2">
+            <h2>Cele mai populare carti</h2>
+            <p>
+                Aici puteti gasi volumele care se bucura de o popularitate aparte.
+                <br/>
+                Pentru a fi la curent cu ultimele <b>bestsellere</b> ale literaturii
+                universale, vizitati
+                <a href="https://www.nytimes.com/books/best-sellers/" target="_blank"
+                >NYT Bestsellers</a
+                >
+                <br/>
+                Urmariti frecvent pagina pentru a nu rata ultimele promotii si
+                discounturi pentru volumele dumneavoastra preferate!
+            </p>
+            <figure>
+                <picture>
+                    <source
+                            srcset="./resurse/imagini/img_small.jpg"
+                            media="(max-width:700px)"
+                    />
+                    <source
+                            srcset="./resurse/imagini/img_medium.jpg"
+                            media="(max-width:1200px)"
+                    />
+                    <source
+                            srcset="./resurse/imagini/img_large.jfif"
+                            media="(max-width:3000px)"
+                    />
+                    <img src="./resurse/imagini/img_large.jfif" alt="carti"/>
+                </picture>
+                <figcaption>
+                    <q>Cand corpul spune nu. Costul stresului ascuns</q> - Gabor Mate
+                </figcaption>
+            </figure>
+        </section>
+
+        <!--Galerie statica-->
+        <%- include("../fragmente/galerie_statica.ejs"); %>
+
+        <!--Galerie animata-->
+        <%- include("../fragmente/galerie_animata.ejs"); %>
+
+    </section>
+
+</main>
+
+<!--Footer-->
+<%- include("../fragmente/footer.ejs"); %>
+
+</body>
+</html>

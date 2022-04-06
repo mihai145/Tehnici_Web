@@ -1,0 +1,17 @@
+<div id="container-galerie-statica">
+    <section id="galerie-statica">
+        <% for(let imag of imagini_galerie_statica) { %>
+            <figure>
+                <picture title="<%= imag.cc %>">
+                    <source srcset="<%= imag.mic %>" media="(max-width:700px)">
+                    <source srcset="<%= imag.mediu %>" media="(max-width:1200px)">
+                    <source srcset="<%= imag.mare %>">
+                    <img src="<%= imag.mare %>" alt="<%= imag.alt %>">
+                </picture>
+                <figcaption>
+                    <%= imag.descriere %>
+                </figcaption>
+            </figure>
+        <% } %>
+    </section>
+</div>

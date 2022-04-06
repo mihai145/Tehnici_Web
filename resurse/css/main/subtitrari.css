@@ -1,0 +1,27 @@
+/* Stil subtitrari */
+::cue {
+    font-size: 30px;
+    line-height: 30px;
+    font-weight: bold;
+    background-color: transparent;
+    color: transparent;
+}
+
+::cue(c), ::cue(u) {
+    background-image: linear-gradient(to right, var(--culoare_text), dimgrey);
+    /*background-clip: text;*/
+    -webkit-background-clip: text;
+}
+
+/* Video si subtitrari pentru ecran mediu si mic */
+@media screen and (max-width: 1200px) {
+    video {
+        width: 400px;
+        height: 225px;
+    }
+
+    ::cue {
+        font-size: 20px;
+        line-height: 20px;
+    }
+}

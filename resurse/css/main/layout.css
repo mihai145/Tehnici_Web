@@ -1,0 +1,191 @@
+/* Layout pentru ecran mare */
+main {
+    display: grid;
+    grid-template-areas: "f-prezentare f-prezentare f-prezentare"
+                         "f-calendar f-tabel f-anunturi"
+                         "f-utilizatori f-tabel f-anunturi"
+                         "f-utilizatori f-info-user f-info-server"
+                         "f-diverse f-diverse f-diverse";
+    grid-template-columns: 1fr 2fr 1fr;
+}
+
+#prezentare {
+    grid-area: f-prezentare;
+    padding: var(--section-padding);
+}
+
+#tabel {
+    grid-area: f-tabel;
+    padding: var(--section-padding);
+}
+
+#calendar {
+    grid-area: f-calendar;
+    padding: var(--section-padding);
+}
+
+#anunturi {
+    grid-area: f-anunturi;
+    padding: var(--section-padding);
+}
+
+#utilizatori {
+    grid-area: f-utilizatori;
+    padding: var(--section-padding);
+}
+
+#info-user {
+    grid-area: f-info-user;
+    padding: var(--section-padding);
+}
+
+#info-server {
+    grid-area: f-info-server;
+    padding: var(--section-padding);
+}
+
+#diverse {
+    grid-area: f-diverse;
+    padding: var(--section-padding);
+}
+
+/* Layout pentru ecran mediu */
+@media screen and (max-width: 1200px) {
+    main {
+        display: grid;
+        grid-template-areas: "f-prezentare f-prezentare"
+                         "f-calendar f-tabel"
+                         "f-utilizatori f-anunturi"
+                         "f-info-user f-info-server"
+                         "f-diverse f-diverse";
+        grid-template-columns: 1fr 1fr;
+    }
+
+    html {
+        font-size: 15px;
+    }
+
+    #tabel-scroll-container {
+        overflow-x: scroll;
+        overflow-y: hidden;
+    }
+}
+
+/* Layout pentru ecran mic */
+@media screen and (max-width: 700px) {
+    main {
+        display: grid;
+        grid-template-areas: "f-prezentare"
+                             "f-tabel"
+                             "f-calendar"
+                             "f-anunturi"
+                             "f-utilizatori"
+                             "f-info-user"
+                             "f-info-server"
+                             "f-diverse";
+        grid-template-columns: 1fr;
+    }
+
+    html {
+        font-size: 14px;
+    }
+
+    #tabel-scroll-container {
+        overflow-x: scroll;
+        overflow-y: hidden;
+    }
+}
+
+/* CSS printare */
+@media print {
+    main {
+        display: grid;
+        grid-template-areas: "f-prezentare"
+                             "f-tabel"
+                             "f-calendar"
+                             "f-anunturi"
+                             "f-utilizatori"
+                             "f-info-user"
+                             "f-info-server"
+                             "f-diverse";
+        grid-template-columns: 1fr;
+    }
+
+    html {
+        font-size: 14px;
+    }
+
+    /* Stil prima pagina */
+    #nav-container {
+        display: none !important;
+    }
+
+    #banner {
+        display: block !important;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 100px;
+        width: 70%;
+        margin: auto;
+        text-align: center;
+        border: 4px inset black;
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    #print-nav {
+        display: block !important;
+        page-break-after: always;
+    }
+
+    /* Ascundem elemente media */
+    video, figure, #iframe-container, #link-top {
+        display: none !important;
+    }
+
+    /* Destilizare link-uri */
+    a {
+        text-decoration: none;
+        color: black;
+    }
+
+    /* Watermark */
+    #watermark {
+        display: block !important;
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        width: 4cm;
+        height: 1cm;
+
+        border: 3px solid black;
+        border-radius: 10px;
+
+        text-align: center;
+        font-weight: bold;
+        opacity: 0.4;
+    }
+
+    #watermark > p {
+        margin: 0;
+    }
+
+    /* Footer */
+    footer {
+        page-break-before: always;
+    }
+
+    /* Margini */
+    @page :left {
+        margin-left: 3cm;
+        margin-right: 1cm;
+    }
+
+    @page :right {
+        margin-left: 1cm;
+        margin-right: 3cm;
+    }
+}

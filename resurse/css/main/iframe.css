@@ -1,0 +1,47 @@
+/* Containerul care grupeaza iframe-ul si controalele */
+#iframe-container {
+    --iframe-width: 400px;
+    --button-width: 100px;
+}
+
+#iframe-container {
+    max-width: var(--iframe-width);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+#iframe-container > iframe {
+    max-width: var(--iframe-width);
+}
+
+/* Containerul care grupeaza controalele */
+#iframe-controls {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+/* Butoane stilizate iframe */
+.iframe-button {
+    width: var(--button-width);
+    margin-left: 2px;
+    padding: 2px;
+
+    border: 4px solid var(--culoare_border);
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+
+    background-color: var(--culoare_highlight);
+    color: var(--culoare_text);
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    text-shadow: var(--culoare_secundara) 2px 2px;
+}
+
+/* Scoatem umbra textului si backgroundul cand facem hover pe butoane */
+.iframe-button:hover {
+    text-shadow: none;
+    background-color: var(--culoare_background);
+}

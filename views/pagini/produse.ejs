@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+    <meta name="description" content="Cartile de vanzare ale magazinului Cartianul">
+    <meta name="keywords" content="magazinul, Cartianul, carti, reviste, ziare">
+
+    <title>Cartianul</title>
+
+    <%- include("../fragmente/head") %>
+
+    <!--CSS pagina produse-->
+    <link rel="stylesheet" href="/resurse/css/produse/produse.css" type="text/css"/>
+
+    <!--JS Produse-->
+    <script type="text/javascript" src=/resurse/js/produse.js></script>
+
+</head>
+
+<body>
+
+<!--Navigator-->
+<%- include("../fragmente/header") %>
+
+<main>
+
+    <!--Sectiune filtre-->
+    <label> Titlu: <input type="text" id="inp-nume"></label>
+    <div> Numar de pagini:
+        <p><label>Cateva ore (pagini &lt; 100)
+                <input id="i_rad1" name="gr_rad" value="0:100" type="radio"/>
+            </label></p>
+        <p><label>Cateva zile (100 &le; pagini &lt; 200)
+                <input id="i_rad2" name="gr_rad" value="100:200" type="radio"/>
+            </label>
+        <p><label>O saptamana (200 &le; pagini)
+                <input id="i_rad3" name="gr_rad" value="200:1000000" type="radio"/>
+            </label>
+        <p><label>Toate
+                <input id="i_rad4" checked name="gr_rad" value="toate" type="radio"/>
+            </label>
+    </div>
+
+
+    <label> Pret minim: <input type="range" id="inp-pret" value="0" min="0" max="70"> <span
+                id="infoRange"> (0) </span></label>
+
+    <label>Select simplu:
+        <select id="inp-categorie">
+            <option id="sel-toate" selected value="toate">Toate</option>
+            <% for (let opt of optiuni) { %>
+                <option value="<%- opt.unnest %>"><%- opt.unnest %> </option>
+            <% } %>
+        </select>
+    </label>
+
+    <p>
+        <button id="filtrare">Filtreaza</button>
+        <button id="resetare">Reseteaza</button>
+        <br/>
+        <button id="sortCrescNume">Sorteaza crescator dupa nume si pret</button>
+        <button id="sortDescrescNume">Sorteaza descrescator dupa nume si pret</button>
+    </p>
+
+    <!--Sectiune produse-->
+    <section id="produse">
+        <h2><%- tip %></h2>
+
+        <div class="grid-produse">
+            <% for(const prod of produse) { %>
+                <article class="produs">
+                    <h3 class="nume">Nume: <a href="/produs/<%- prod.id %>"><span
+                                    class="val-nume"><%- prod.nume %></span></a></h3>
+                    <h4>Autor: <%- prod.autor %> </h4>
+
+                    <div class="info-prod">
+                        <p class="pret">Pret: <span class="val-pret"><%- prod.pret %></span></p>
+                        <p class="nr_pagini">Numar de pagini: <span class="val-nr-pagini"><%- prod.nr_pagini %></span>
+                        </p>
+                    </div>
+
+                    <p class="categorie">Categorie: <span class="val-categorie"><%- prod.categorie %></span></p>
+                    <!--                <figure>-->
+                    <!--                    <a href="/produs/<%- prod.id %>"><img src="/resurse/imagini/produse/<%- prod.imagine %>"-->
+                    <!--                                                          style="width:50%;height:auto;"-->
+                    <!--                                                          alt="[imagine <%- prod.nume %>]"/></a>-->
+                    <!--                </figure>-->
+
+                    <label class="selecteaza-cos">
+                        Selectează:<br/>
+                        <input type="checkbox" class="select-cos" value="<%- prod.id %>" autocomplete="off">
+                    </label>
+                </article>
+            <% } %>
+        </div>
+    </section>
+
+</main>
+
+<%- include("../fragmente/footer") %>
+</body>
+</html>

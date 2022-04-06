@@ -1,0 +1,18 @@
+{
+  "name": "magazinul_cartianul",
+  "version": "1.0.0",
+  "description": "Online book store",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Oprea Mihai Adrian",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "express": "^4.17.3",
+    "pg": "^8.7.3",
+    "sass": "^1.49.9",
+    "sharp": "^0.30.3"
+  }
+}

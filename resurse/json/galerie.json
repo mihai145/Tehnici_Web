@@ -1,0 +1,126 @@
+{
+  "cale_galerie": "resurse/imagini/galerie",
+  "imagini": [
+    {
+      "cale_imagine": "rsz_book_shop.jpg",
+      "titlu": "Book shop",
+      "descriere": "Book shop",
+      "alt": "Imagine Book shop",
+      "timp": "08:00-21:00",
+      "galerie_animata": true,
+      "cc": "\"'Book' shop\" by Elsie esq. is marked with CC BY 2.0."
+    },
+    {
+      "cale_imagine": "rsz_cartea_naturii.jpg",
+      "titlu": "Cartea naturii",
+      "descriere": "Cartea naturii",
+      "alt": "Imagine Cartea naturii",
+      "timp": "08:00-21:00",
+      "galerie_animata": true
+    },
+    {
+      "cale_imagine": "rsz_cartea_unei_lumi_mici.jpg",
+      "titlu": "Cartea unei lumi mici",
+      "descriere": "Cartea unei lumi mici",
+      "alt": "Imagine Cartea unei lumi mici",
+      "timp": "08:00-21:00",
+      "galerie_animata": true
+    },
+    {
+      "cale_imagine": "rsz_clogged.jpg",
+      "titlu": "Clogged",
+      "descriere": "Clogged",
+      "alt": "Imagine Clogged",
+      "timp": "08:00-21:00",
+      "galerie_animata": true
+    },
+    {
+      "cale_imagine": "rsz_coffee_break.jpg",
+      "titlu": "Coffee break",
+      "descriere": "Coffee break",
+      "alt": "Imagine Coffee break",
+      "timp": "08:00-21:00",
+      "galerie_animata": true
+    },
+    {
+      "cale_imagine": "rsz_inima_dintre_pagini.jpg",
+      "titlu": "Inima dintre pagini",
+      "descriere": "Inima dintre pagini",
+      "alt": "Imagine Inima dintre pagini",
+      "timp": "08:00-21:00",
+      "galerie_animata": true
+    },
+    {
+      "cale_imagine": "rsz_juvenile_passion.jpg",
+      "titlu": "Juvenile passion",
+      "descriere": "Juvenile passion",
+      "alt": "Imagine Juvenile passion",
+      "timp": "08:00-21:00",
+      "galerie_animata": true
+    },
+    {
+      "cale_imagine": "rsz_librarie_veche.jpg",
+      "titlu": "Librarie veche",
+      "descriere": "Librarie veche",
+      "alt": "Imagine Librarie veche",
+      "timp": "08:00-21:00",
+      "galerie_animata": true
+    },
+    {
+      "cale_imagine": "rsz_ochii_sufletului.jpg",
+      "titlu": "Ochii sufletului",
+      "descriere": "Ochii sufletului",
+      "alt": "Imagine Ochii sufletului",
+      "timp": "08:00-21:00",
+      "galerie_animata": true
+    },
+    {
+      "cale_imagine": "rsz_oriunde_oricand.jpg",
+      "titlu": "Oriunde, oricand...",
+      "descriere": "Oriunde, oricand...",
+      "alt": "Imagine Oriunde, oricand...",
+      "timp": "08:00-21:00",
+      "galerie_animata": true
+    },
+    {
+      "cale_imagine": "rsz_timpul_zboara.jpg",
+      "titlu": "Timpul zboara",
+      "descriere": "Timpul zboara",
+      "alt": "Imagine Timpul zboara",
+      "timp": "08:00-21:00",
+      "galerie_animata": true
+    },
+    {
+      "cale_imagine": "rsz_un_mic_cadou.jpg",
+      "titlu": "Un mic cadou",
+      "descriere": "Un mic cadou",
+      "alt": "Imagine Un mic cadou",
+      "timp": "08:00-21:00",
+      "galerie_animata": true
+    },
+    {
+      "cale_imagine": "rsz_inconjurat.jpg",
+      "titlu": "Inconjurat",
+      "descriere": "Inconjurat",
+      "alt": "Inconjurat",
+      "timp": "08:00-21:00",
+      "galerie_animata": true
+    },
+    {
+      "cale_imagine": "rsz_rucsac.jpg",
+      "titlu": "Rucsacul cu lectura",
+      "descriere": "Rucsacul cu lectura",
+      "alt": "Rucsacul cu lectura",
+      "timp": "08:00-21:00",
+      "galerie_animata": true
+    },
+    {
+      "cale_imagine": "rsz_in_biblioteca.jpg",
+      "titlu": "In biblioteca",
+      "descriere": "In biblioteca",
+      "alt": "In biblioteca",
+      "timp": "08:00-21:00",
+      "galerie_animata": true
+    }
+  ]
+}

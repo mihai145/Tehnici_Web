@@ -1,0 +1,30 @@
+html {
+    font-size: 16px;
+}
+
+/* Schema cromatica */
+body {
+    --culoare_background: #FEF1D9;
+    --culoare_text: #24221E;
+    --culoare_border: #D9CDB8;
+    --culoare_highlight: #F2E6CE;
+    --culoare_secundara: #B3A998;
+    --durata-animatie: 0.3s;
+    --font-large: 16px;
+    --font-medium: 14px;
+    --section-padding: 25px;
+}
+
+body {
+    background-color: var(--culoare_background);
+    color: var(--culoare_text);
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+h1 {
+    padding-left: var(--section-padding);
+    font-size: 3rem;
+    text-shadow: var(--culoare_secundara) 1px 1px;
+}
