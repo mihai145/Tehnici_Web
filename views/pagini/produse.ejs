@@ -25,42 +25,44 @@
 <main>
 
     <!--Sectiune filtre-->
-    <label> Titlu: <input type="text" id="inp-nume"></label>
-    <div> Numar de pagini:
-        <p><label>Cateva ore (pagini &lt; 100)
-                <input id="i_rad1" name="gr_rad" value="0:100" type="radio"/>
-            </label></p>
-        <p><label>Cateva zile (100 &le; pagini &lt; 200)
-                <input id="i_rad2" name="gr_rad" value="100:200" type="radio"/>
-            </label>
-        <p><label>O saptamana (200 &le; pagini)
-                <input id="i_rad3" name="gr_rad" value="200:1000000" type="radio"/>
-            </label>
-        <p><label>Toate
-                <input id="i_rad4" checked name="gr_rad" value="toate" type="radio"/>
-            </label>
-    </div>
+    <section id="filter-section">
+        <label> Titlu: <input type="text" id="inp-nume"></label>
+        <div> Numar de pagini:
+            <p><label>Cateva ore (pagini &lt; 100)
+                    <input id="i_rad1" name="gr_rad" value="0:100" type="radio"/>
+                </label></p>
+            <p><label>Cateva zile (100 &le; pagini &lt; 200)
+                    <input id="i_rad2" name="gr_rad" value="100:200" type="radio"/>
+                </label>
+            <p><label>O saptamana (200 &le; pagini)
+                    <input id="i_rad3" name="gr_rad" value="200:1000000" type="radio"/>
+                </label>
+            <p><label>Toate
+                    <input id="i_rad4" checked name="gr_rad" value="toate" type="radio"/>
+                </label>
+        </div>
 
 
-    <label> Pret minim: <input type="range" id="inp-pret" value="0" min="0" max="70"> <span
-                id="infoRange"> (0) </span></label>
+        <label> Pret minim: <input type="range" id="inp-pret" value="0" min="0" max="70"> <span
+                    id="infoRange"> (0) </span></label>
 
-    <label>Select simplu:
-        <select id="inp-categorie">
-            <option id="sel-toate" selected value="toate">Toate</option>
-            <% for (let opt of optiuni) { %>
-                <option value="<%- opt.unnest %>"><%- opt.unnest %> </option>
-            <% } %>
-        </select>
-    </label>
+        <label>Select simplu:
+            <select id="inp-categorie">
+                <option id="sel-toate" selected value="toate">Toate</option>
+                <% for (let opt of optiuni) { %>
+                    <option value="<%- opt.unnest %>"><%- opt.unnest %> </option>
+                <% } %>
+            </select>
+        </label>
 
-    <p>
-        <button id="filtrare">Filtreaza</button>
-        <button id="resetare">Reseteaza</button>
-        <br/>
-        <button id="sortCrescNume">Sorteaza crescator dupa nume si pret</button>
-        <button id="sortDescrescNume">Sorteaza descrescator dupa nume si pret</button>
-    </p>
+        <p>
+            <button id="filtrare">Filtreaza</button>
+            <button id="resetare">Reseteaza</button>
+            <br/>
+            <button id="sortCrescNume">Sorteaza crescator dupa nume si pret</button>
+            <button id="sortDescrescNume">Sorteaza descrescator dupa nume si pret</button>
+        </p>
+    </section>
 
     <!--Sectiune produse-->
     <section id="produse">

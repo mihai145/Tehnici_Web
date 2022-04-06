@@ -1,3 +1,7 @@
+#filter-section {
+    padding: var(--section-padding);
+}
+
 #produse {
     padding: var(--section-padding);
 }
