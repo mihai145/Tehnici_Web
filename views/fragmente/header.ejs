@@ -17,9 +17,9 @@
                     <div class="submenu-label">Catalog</div>
                     <ul class="submenu">
                         <li><a href="/produse">Toate</a></li>
-                        <li><a href="/produse?tip=Carte">Cărți</a></li>
-                        <li><a href="/produse?tip=Revistă">Reviste</a></li>
-                        <li><a href="/produse?tip=Ziar">Ziare</a></li>
+                        <% for (const tip of tipuriCarti) { %>
+                            <li><a href="/produse?tip=<%- tip.unnest %>"><%- tip.unnest %></a></li>
+                        <% } %>
                     </ul>
                 </li>
                 <li>

@@ -17,17 +17,38 @@ const client = new Client({
 });
 client.connect();
 
+/* Variabile globale */
+const obGlobal = {
+    obImagini: null,
+    obErori: null,
+    tipuriCarti: null,
+}
+/* Initializare tipuri carti */
+client.query("select * from unnest(enum_range(null::tip_carti))", (err, tipuriRes) => {
+    if (err) {
+        console.log(err);
+    } else {
+        obGlobal.tipuriCarti = tipuriRes.rows;
+    }
+});
+
 /* View engine */
 app.set("view engine", "ejs");
 /* Static */
 app.use("/resurse", express.static(__dirname + "/resurse"));
+
+/* Tipuri carti */
+app.use("/*", (req, res, next) => {
+    res.locals.tipuriCarti = obGlobal.tipuriCarti;
+    next();
+});
 
 app.get(["/", "/index", "/home"], (req, res) => {
     res.render("pagini/index", {
         ip: req.ip,
         vector: [10, 20, 30],
         imagini_galerie_statica: imaginiFereastraTimp(),    /* filtram dupa timp */
-        imagini_galerie_animata: obImagini.imagini,         /* trimitem toate imaginile */
+        imagini_galerie_animata: obGlobal.obImagini.imagini,         /* trimitem toate imaginile */
     });
 });
 
@@ -107,13 +128,13 @@ app.get("*/galerie_animata.css", (err, res) => {
 });
 
 const randeazaEroare = (res, identificator, titlu, text, imagine) => {
-    const eroare = obErori.erori.find(el => {
+    const eroare = obGlobal.obErori.erori.find(el => {
         return (el.identificator === identificator);
     });
 
     titlu = titlu || (eroare && eroare.titlu) || "Eroare";
     text = text || (eroare && eroare.text) || "Text";
-    imagine = imagine || (eroare && (obErori.cale_baza + '/' + eroare.imagine)) || "Imagine";
+    imagine = imagine || (eroare && (obGlobal.obErori.cale_baza + '/' + eroare.imagine)) || "Imagine";
 
     if (eroare && eroare.status) {
         res.status(eroare.identificator);
@@ -150,7 +171,7 @@ app.get("/*", (req, res) => {
 const imaginiFereastraTimp = () => {
     let imaginiFereastraTimp = [];
     let oraCurenta = new Date().getHours() + ":" + new Date().getMinutes();
-    for (let imag of obImagini.imagini) {
+    for (let imag of obGlobal.obImagini.imagini) {
         [start_interval, end_interval] = imag.timp.split("-");
         if (start_interval <= oraCurenta && oraCurenta <= end_interval) {
             if (imaginiFereastraTimp.length < 10) {
@@ -164,21 +185,21 @@ const imaginiFereastraTimp = () => {
 /* Redimensioneaza imaginile mari in medii si mici */
 const creeazaImagini = () => {
     const buf = fs.readFileSync(__dirname + "/resurse/json/galerie.json").toString("utf8");
-    obImagini = JSON.parse(buf); //global
+    obGlobal.obImagini = JSON.parse(buf); //global
 
-    for (let imag of obImagini.imagini) {
+    for (let imag of obGlobal.obImagini.imagini) {
         let nume_imag, extensie;
         [nume_imag, extensie] = imag.cale_imagine.split("."); //"abc.de".split(".") ---> ["abc","de"]
-        imag.mare = `${obImagini.cale_galerie}/${imag.cale_imagine}`;
+        imag.mare = `${obGlobal.obImagini.cale_galerie}/${imag.cale_imagine}`;
 
         const dim_mediu = 300;
-        imag.mediu = `${obImagini.cale_galerie}/mediu/${nume_imag}-${dim_mediu}.webp`; //nume-300.webp
+        imag.mediu = `${obGlobal.obImagini.cale_galerie}/mediu/${nume_imag}-${dim_mediu}.webp`; //nume-300.webp
         if (!fs.existsSync(imag.mediu)) {
             sharp(__dirname + "/" + imag.mare).resize(dim_mediu).toFile(__dirname + "/" + imag.mediu);
         }
 
         const dim_mic = 150;
-        imag.mic = `${obImagini.cale_galerie}/mic/${nume_imag}-${dim_mic}.webp`; //nume-150.webp
+        imag.mic = `${obGlobal.obImagini.cale_galerie}/mic/${nume_imag}-${dim_mic}.webp`; //nume-150.webp
         if (!fs.existsSync(imag.mic)) {
             sharp(__dirname + "/" + imag.mare).resize(dim_mic).toFile(__dirname + "/" + imag.mic);
         }
@@ -188,7 +209,7 @@ creeazaImagini();
 
 const creeazaErori = () => {
     const buf = fs.readFileSync(__dirname + "/resurse/json/erori.json").toString("utf8");
-    obErori = JSON.parse(buf); //global
+    obGlobal.obErori = JSON.parse(buf); //global
 }
 creeazaErori();
 

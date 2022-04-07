@@ -10,9 +10,13 @@ window.onload = () => {
     /* Butoane */
     const btn_filtrare = document.getElementById("filtrare");
     const radio_buttons = document.getElementsByName("gr_rad");
+    const btn_resetare = document.getElementById("resetare");
+    const sort_cresc = document.getElementById("sortCrescNume");
+    const sort_descresc = document.getElementById("sortDescrescNume");
 
     /* Produse */
     const produse = document.querySelectorAll("article.produs");
+    const grid_produse = document.getElementsByClassName("grid-produse")[0];
 
     /* Obtinem nr_pagini din radio button-ul selectat */
     const get_nr_pagini = () => {
@@ -23,7 +27,7 @@ window.onload = () => {
                 break;
             }
         }
-        if (nr_pagini != "toate") {
+        if (nr_pagini !== "toate") {
             let min_pagini, max_pagini;
             [min_pagini, max_pagini] = nr_pagini.split(":");
             min_pagini = parseInt(min_pagini);
@@ -39,6 +43,7 @@ window.onload = () => {
         span_range.innerHTML = " (" + e.target.value + ") ";
     }
 
+    /* Filtrare */
     btn_filtrare.onclick = () => {
         const val_name = inp_name.value;
         for (const produs of produse) {
@@ -73,4 +78,52 @@ window.onload = () => {
             }
         }
     };
+
+    /* Resetare */
+    btn_resetare.onclick = () => {
+        for(const produs of produse) {
+            produs.style.display = "block";
+        }
+
+        inp_name.value = "";
+        range.value = 0;
+        span_range.innerHTML = "(0)";
+        document.getElementById("i_rad4").checked = true;
+        document.getElementById("sel-toate").selected = true;
+    }
+
+    const sort_produse = (sgn) => {
+        let array_produse = Array.from(produse);
+        array_produse.sort((a,  b) => {
+            const a_pret = parseFloat(a.getElementsByClassName("val-pret")[0].innerHTML);
+            const b_pret = parseFloat(b.getElementsByClassName("val-pret")[0].innerHTML);
+            if(a_pret !== b_pret) {
+                return sgn * (a_pret - b_pret);
+            }
+
+            const a_nume = a.getElementsByClassName("val_nume")[0].innerHTML;
+            const b_nume = b.getElementsByClassName("val-nume")[0].innerHTML;
+            return sgn * a_nume.localeCompare(b_nume);
+        });
+
+        return array_produse;
+    }
+
+    /* Sortare crescatoare */
+    sort_cresc.onclick = () => {
+        const array_produse = sort_produse(1);
+
+        for(const produs of array_produse) {
+            grid_produse.appendChild(produs);
+        }
+    }
+
+    /* Sortare descrescatoare */
+    sort_descresc.onclick = () => {
+        const array_produse = sort_produse(-1);
+
+        for(const produs of array_produse) {
+            grid_produse.appendChild(produs);
+        }
+    }
 };

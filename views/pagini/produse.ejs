@@ -49,7 +49,7 @@
         <label>Select simplu:
             <select id="inp-categorie">
                 <option id="sel-toate" selected value="toate">Toate</option>
-                <% for (let opt of optiuni) { %>
+                <% for (const opt of optiuni) { %>
                     <option value="<%- opt.unnest %>"><%- opt.unnest %> </option>
                 <% } %>
             </select>
