@@ -1,5 +1,22 @@
+/* Sectiune filtrare */
 #filter-section {
     padding: var(--section-padding);
+    --filter-section-padding: 4px;
+}
+
+.container-inp-nume, .container-inp-nr-pag, .container-inp-pret, .container-inp-categorie, .container-butoane {
+    width: 300px;
+    margin-bottom: 4px;
+    padding: var(--filter-section-padding);
+    border: 2px solid var(--culoare_text);
+}
+
+.container-butoane button {
+    margin: var(--filter-section-padding);
+}
+
+#heading-tip-produse {
+    text-align: center;
 }
 
 #produse {
@@ -20,4 +37,35 @@
 
 #produse a {
     text-decoration: none;
+}
+
+/* Informatii produse */
+.info-prod > table {
+    width: 300px;
+    text-align: center;
+    border: 1px solid var(--culoare_text);
+}
+
+.info-prod > table td {
+    border: 1px solid var(--culoare_text);
+}
+
+/* Grid produse */
+.grid-produse {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    padding: var(--section-padding);
+}
+
+.grid-produse > .produs {
+    margin: var(--section-padding);
+    width: 40%;
+}
+
+/* Grid produse pentru ecran mediu si mic */
+@media screen and (max-width: 850px) {
+    .grid-produse > .produs {
+        width: 80%;
+    }
 }
