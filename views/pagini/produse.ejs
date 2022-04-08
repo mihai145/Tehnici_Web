@@ -47,11 +47,15 @@
 
 
         <div class="container-inp-pret">
-            <label> Pret minim: <input type="range" id="inp-pret-min" value="0" min="0" max="70"> <span
-                        id="infoRangeMin"> (0) </span></label>
+            <label> Pret minim: <input type="range" id="inp-pret-min" value="<%- Math.floor(min_price) %>"
+                                       min="<%- Math.floor(min_price) %>"
+                                       max="<%- Math.ceil(max_price) %>"> <span
+                        id="infoRangeMin"> (<%- Math.floor(min_price) %>) </span></label>
             <br>
-            <label> Pret maxim: <input type="range" id="inp-pret-max" value="70" min="0" max="70"> <span
-                        id="infoRangeMax"> (70) </span></label>
+            <label> Pret maxim: <input type="range" id="inp-pret-max" value="<%- Math.ceil(max_price) %>"
+                                       min="<%- Math.floor(min_price) %>"
+                                       max="<%- Math.ceil(max_price) %>"> <span
+                        id="infoRangeMax"> (<%- Math.ceil(max_price) %>) </span></label>
         </div>
 
         <div class="container-inp-categorie">
@@ -60,6 +64,16 @@
                     <option id="sel-toate" selected value="toate">Toate</option>
                     <% for (const opt of optiuni) { %>
                         <option value="<%- opt.unnest %>"><%- opt.unnest %> </option>
+                    <% } %>
+                </select>
+            </label>
+        </div>
+
+        <div class="container-inp-gen-literar">
+            <label>Genuri literare:
+                <select id="inp-gen-literar" multiple>
+                    <% for (const gen of genuri) { %>
+                        <option value="<%- gen.unnest %>"><%- gen.unnest %> </option>
                     <% } %>
                 </select>
             </label>
@@ -116,6 +130,14 @@
                                 </td>
                                 <td>
                                     <span class="val-categorie"><%- prod.categorie %></span>
+                                </td>
+                            </tr>
+                            <tr style="display: none">
+                                <td>
+                                    Genuri literare:
+                                </td>
+                                <td>
+                                    <span class="val-genuri-literare"><%- prod.genuri_literare %></span>
                                 </td>
                             </tr>
                             <tr>

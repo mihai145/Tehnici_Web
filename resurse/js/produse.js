@@ -4,6 +4,7 @@ window.onload = () => {
     const range_min = document.getElementById("inp-pret-min");
     const range_max = document.getElementById("inp-pret-max");
     const inp_categ = document.getElementById("inp-categorie");
+    const inp_gen_literar = document.getElementById("inp-gen-literar");
 
     /* Spans */
     const span_range_min = document.getElementById("infoRangeMin");
@@ -50,7 +51,6 @@ window.onload = () => {
         span_range_max.innerHTML = " (" + e.target.value + ") ";
     }
 
-
     const match_name = (str_a, str_b) => {
         if (!str_b.includes("*")) {
             /* Daca str_b nu contine '*', str_a trebuie sa aibe ca prefix str_b*/
@@ -69,6 +69,16 @@ window.onload = () => {
             return false;
         }
     };
+
+    const get_selected_genres = () => {
+        let genres = []
+        for (let genre of inp_gen_literar.options) {
+            if (genre.selected) {
+                genres.push(genre.innerHTML.trim());
+            }
+        }
+        return genres;
+    }
 
     /* Filtrare */
     btn_filtrare.onclick = () => {
@@ -100,7 +110,25 @@ window.onload = () => {
             const categ_carte = produs.getElementsByClassName("val-categorie")[0].innerHTML;
             const cond4 = (inp_categ.value === "toate" || categ_carte === inp_categ.value);
 
-            if (cond1 && cond2 && cond3 && cond4) {
+            /* Gen literar */
+            const selected_genres = get_selected_genres(),
+                prod_genres = produs.getElementsByClassName("val-genuri-literare")[0].innerHTML.split(',');
+            let all_genres = true;
+            for (const selected_genre of selected_genres) {
+                let found = false;
+                for (const prod_genre of prod_genres) {
+                    if (selected_genre == prod_genre) {
+                        found = true;
+                    }
+                }
+                if (!found) {
+                    all_genres = false;
+                    break;
+                }
+            }
+            const cond5 = all_genres;
+
+            if (cond1 && cond2 && cond3 && cond4 && cond5) {
                 produs.style.display = "block";
             }
         }
@@ -114,13 +142,17 @@ window.onload = () => {
 
         inp_name.value = "";
 
-        range_min.value = 0;
-        span_range_min.innerHTML = " (0) ";
+        range_min.value = range_min.min;
+        span_range_min.innerHTML = " (" + range_min.min + ") ";
         range_max.value = range_max.max;
         span_range_max.innerHTML = " (" + range_max.max + ") ";
 
         document.getElementById("i_rad4").checked = true;
         document.getElementById("sel-toate").selected = true;
+
+        for (const genre of inp_gen_literar) {
+            genre.selected = false;
+        }
     }
 
     const sort_produse = (sgn) => {

@@ -8,6 +8,7 @@ const sharp = require('sharp');
 
 /* DB Setup */
 const {Client} = require('pg');
+const {max} = require("pg/lib/defaults");
 const client = new Client({
     database: "proiect_cartianul",
     user: "mihai145",
@@ -53,14 +54,22 @@ app.get(["/", "/index", "/home"], (req, res) => {
 });
 
 app.get("/produse", (req, res) => {
-    client.query("select * from unnest(enum_range(null::categ_carti))", (err, categRes) => {
-        const restr_tip = (req.query.tip) ? `tip='${req.query.tip}'` : "1=1"
-
-        client.query("select * from carti where " + restr_tip, (err, queryRes) => {
-            res.render("pagini/produse", {
-                tip: (req.query.tip) ? req.query.tip : "Toate",
-                produse: queryRes.rows,
-                optiuni: categRes.rows
+    client.query("select * from unnest(enum_range(null::categ_carti))", (err1, categRes) => {
+        client.query("select distinct unnest(genuri_literare) from carti c", (err2, genuriRes) => {
+            client.query("select min(pret) from carti", (err3, minRes) => {
+                client.query("select max(pret) from carti", (err4, maxRes) => {
+                    const restr_tip = (req.query.tip) ? `tip='${req.query.tip}'` : "1=1"
+                    client.query("select * from carti where " + restr_tip, (err, queryRes) => {
+                        res.render("pagini/produse", {
+                            tip: (req.query.tip) ? req.query.tip : "Toate",
+                            produse: queryRes.rows,
+                            optiuni: categRes.rows,
+                            genuri: genuriRes.rows,
+                            min_price: minRes.rows[0].min,
+                            max_price: maxRes.rows[0].max
+                        });
+                    });
+                });
             });
         });
     })

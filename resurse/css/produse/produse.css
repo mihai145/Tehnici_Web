@@ -4,7 +4,7 @@
     --filter-section-padding: 4px;
 }
 
-.container-inp-nume, .container-inp-nr-pag, .container-inp-pret, .container-inp-categorie, .container-butoane {
+.container-inp-nume, .container-inp-nr-pag, .container-inp-pret, .container-inp-categorie, .container-inp-gen-literar,.container-butoane {
     width: 300px;
     margin-bottom: 4px;
     padding: var(--filter-section-padding);
@@ -15,6 +15,12 @@
     margin: var(--filter-section-padding);
 }
 
+#inp-gen-literar {
+    width: 200px;
+    height: 100px;
+}
+
+/* Sectiune produse */
 #heading-tip-produse {
     text-align: center;
 }
