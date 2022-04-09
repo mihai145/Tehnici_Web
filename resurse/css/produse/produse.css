@@ -1,10 +1,14 @@
 /* Sectiune filtrare */
-#filter-section {
-    padding: var(--section-padding);
+main {
     --filter-section-padding: 4px;
+    --product-section-padding: 10px;
 }
 
-.container-inp-nume, .container-inp-nr-pag, .container-inp-pret, .container-inp-categorie, .container-inp-gen-literar,.container-butoane {
+#filter-section {
+    padding: var(--filter-section-padding);
+}
+
+.container-inp-nume, .container-inp-nr-pag, .container-inp-pret, .container-inp-categorie, .container-inp-gen-literar, .container-butoane {
     width: 300px;
     margin-bottom: 4px;
     padding: var(--filter-section-padding);
@@ -29,6 +33,10 @@
     padding: var(--section-padding);
 }
 
+#produse a {
+    text-decoration: none;
+}
+
 .produs {
     padding: var(--section-padding);
     margin-bottom: var(--section-padding);
@@ -37,19 +45,35 @@
     border-radius: 10px;
 }
 
-.val-nume {
+.val-nume, .val-descriere {
     color: var(--culoare_text);
 }
 
-#produse a {
-    text-decoration: none;
+/* Grupaj info-produs si imagine */
+#info-img-container {
+    margin: 0;
+    padding: 0;
+
+    display: flex;
+    flex-wrap: wrap;
 }
 
-/* Informatii produse */
+.produs figure {
+    margin: 0;
+}
+
+.produs figure > img {
+    margin: 0;
+    padding: 0;
+}
+
+/* Tabel informatii produse */
 .info-prod > table {
     width: 300px;
     text-align: center;
     border: 1px solid var(--culoare_text);
+    margin-right: var(--product-section-padding);
+    margin-bottom: var(--product-section-padding);
 }
 
 .info-prod > table td {
