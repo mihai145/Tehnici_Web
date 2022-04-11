@@ -6,9 +6,12 @@ const ejs = require('ejs');
 const sass = require('sass');
 const sharp = require('sharp');
 
+const formidable = require('formidable');
+const crypto = require('crypto');
+const session = require('express-session');
+
 /* DB Setup */
 const {Client} = require('pg');
-const {max} = require("pg/lib/defaults");
 const client = new Client({
     database: "proiect_cartianul",
     user: "mihai145",
@@ -80,6 +83,21 @@ app.get("/produs/:id", (req, res) => {
         res.render("pagini/produs", {
             prod: queryRes.rows[0],
         })
+    });
+});
+
+const salt = "tehniciweb";
+app.post("/inreg", (req, res) => {
+    const formular = new formidable.IncomingForm();
+    formular.parse(req, (err, campuriText, campuriFisier) => {
+        const parola_criptata = crypto.scryptSync(campuriText.parola, salt, 64).toString('hex');
+        const comanda_inserare = `insert into utilizatori (username, nume, prenume, parola, email, culoare_chat) values ('${campuriText.username}','${campuriText.nume}','${campuriText.prenume}','${parola_criptata}','${campuriText.email}','${campuriText.culoare_chat}')`;
+        client.query(comanda_inserare, (err, res) => {
+           if(err) {
+               console.log(err);
+           }
+        });
+        res.send("Ok");
     });
 });
 

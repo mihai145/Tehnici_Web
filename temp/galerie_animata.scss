@@ -1,8 +1,8 @@
 @use "sass:math";
 @use "sass:list";
 
-$nr_imag: 9;
-$pozitii_imagini: ((1, 1), (2, 1), (2, 3), (2, 2), (1, 2), (1, 3), (3, 3), (3, 1), (3, 2));
+$nr_imag: 15;
+$pozitii_imagini: ((1, 1), (2, 1), (2, 3), (2, 2), (1, 2), (1, 3), (3, 3), (3, 1), (3, 2), (4, 2), (4, 3), (4, 1), (5, 2), (5, 3), (5, 1));
 
 #container-galerie-animata {
   width: 400px;
