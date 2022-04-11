@@ -15,6 +15,14 @@ body {
     --section-padding: 25px;
 }
 
+body.dark {
+    --culoare_background: black;
+    --culoare_text: white;
+    --culoare_border: red;
+    --culoare_highlight: blue;
+    --culoare_secundara: gray;
+}
+
 body {
     background-color: var(--culoare_background);
     color: var(--culoare_text);

@@ -1,3 +1,11 @@
+<script>
+    const tema = localStorage.getItem("tema");
+    if (tema) {
+        document.body.classList.add("dark");
+    } else {
+        document.body.classList.remove("dark");
+    }
+</script>
 <header>
     <div id="nav-container">
         <input type="checkbox" id="hamburger-icon">

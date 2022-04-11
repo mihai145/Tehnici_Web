@@ -1,4 +1,4 @@
-window.onload = () => {
+window.addEventListener("load", () => {
     /* Inputs */
     const inp_name = document.getElementById("inp-nume");
     const range_min = document.getElementById("inp-pret-min");
@@ -213,4 +213,4 @@ window.onload = () => {
             }, 2000);
         }
     }
-};
+});
