@@ -1,0 +1,7 @@
+div.afisaj {
+    margin: var(--section-padding);
+}
+
+div.afisaj > h1 {
+    padding: 0;
+}

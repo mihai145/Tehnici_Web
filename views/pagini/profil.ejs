@@ -4,9 +4,9 @@
     <title>Profil</title>
     <%- include("../fragmente/head") %>
 
-    <link rel="stylesheet" type="text/css" href="/resurse/css/contact.css"/>
-    <script>
+    <!--    <link rel="stylesheet" type="text/css" href="/resurse/css/contact.css"/>-->
 
+    <script>
         // populez inputurile din pagina de profil cu datele din tabel (incarcate prin EJS)
         window.addEventListener("DOMContentLoaded", function () {
             document.getElementById("inp-username").value = "<%= locals.utilizator.username %>";
@@ -21,11 +21,15 @@
                     opt.selected = true;
         });
     </script>
+
 </head>
+
 <body class="container">
+
 <header>
     <%- include("../fragmente/header") %>
 </header>
+
 <main>
 
     <section>
@@ -39,4 +43,5 @@
 <%- include("../fragmente/footer") %>
 
 </body>
+
 </html>

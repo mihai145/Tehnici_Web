@@ -93,11 +93,11 @@ app.post("/inreg", (req, res) => {
         const parola_criptata = crypto.scryptSync(campuriText.parola, salt, 64).toString('hex');
         const comanda_inserare = `insert into utilizatori (username, nume, prenume, parola, email, culoare_chat) values ('${campuriText.username}','${campuriText.nume}','${campuriText.prenume}','${parola_criptata}','${campuriText.email}','${campuriText.culoare_chat}')`;
         client.query(comanda_inserare, (err, res) => {
-           if(err) {
-               console.log(err);
-           }
+            if (err) {
+                console.log(err);
+            }
         });
-        res.send("Ok");
+        res.redirect("/");
     });
 });
 
