@@ -197,7 +197,9 @@ app.get("/*", (req, res) => {
 /* Returneaza imaginile al caror interval de afisare contine ora curenta */
 const imaginiFereastraTimp = () => {
     let imaginiFereastraTimp = [];
-    let oraCurenta = new Date().getHours() + ":" + new Date().getMinutes();
+    let oraCurenta = (new Date().getHours() >= 10 ? new Date().getHours() : '0' + new Date().getHours())
+        + ":"
+        + (new Date().getMinutes() >= 10 ? new Date().getMinutes() : '0' + new Date().getMinutes());
     for (let imag of obGlobal.obImagini.imagini) {
         [start_interval, end_interval] = imag.timp.split("-");
         if (start_interval <= oraCurenta && oraCurenta <= end_interval) {
@@ -240,6 +242,11 @@ const creeazaErori = () => {
 }
 creeazaErori();
 
-app.listen(8080, callback = () => {
-    console.log("Serverul asculta pe portul 8080...");
+const s_port = process.env.PORT || 8080;
+app.listen(s_port, () => {
+   console.log("Started");
 });
+
+// app.listen(8080, callback = () => {
+//     console.log("Serverul asculta pe portul 8080...");
+// });
