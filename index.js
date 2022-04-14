@@ -12,12 +12,22 @@ const session = require('express-session');
 
 /* DB Setup */
 const {Client} = require('pg');
+// const client = new Client({
+//     database: "proiect_cartianul",
+//     user: "mihai145",
+//     password: "mihai145",
+//     host: "localhost",
+//     port: 5432,
+// });
 const client = new Client({
-    database: "proiect_cartianul",
-    user: "mihai145",
-    password: "mihai145",
-    host: "localhost",
+    database: "d1o6io0om1nthn",
+    user: "xyvpbfwgmsvxny",
+    password: "1f70202fc346cec5ca700c27cf39f837004694e4f3de4ae6044064feba2a1d13",
+    host: "ec2-34-197-84-74.compute-1.amazonaws.com",
     port: 5432,
+    ssl: {
+        rejectUnauthorized: false
+    }
 });
 client.connect();
 
