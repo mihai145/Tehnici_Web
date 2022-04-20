@@ -4,8 +4,6 @@
     <meta name="description" content="Magazinul Cartianul - înregistrare utilizatori">
     <meta name="keywords" content="librarie, Cartianul, inregistrare, utilizatori">
 
-    <!--    <link rel="stylesheet" href="/resurse/css/produse.css" type="text/css"/>-->
-
     <!--CSS pagina inregistrare-->
     <link rel="stylesheet" href="/resurse/css/utilizatori/inregistrare.css" type="text/css">
 
@@ -13,7 +11,8 @@
 
     <%- include("../fragmente/head") %>
 
-    <!--    <script type="text/javascript" src=/resurse/js/inregistrare.js></script>-->
+    <!--JS validari-->
+    <script type="text/javascript" src=/resurse/js/inregistrare.js></script>
 
 </head>
 
@@ -24,15 +23,18 @@
     <div class="afisaj">
         <h1>Inregistrare utilizator</h1>
 
-        <% if (true) { %>
+        <% if(locals.err) { %>
+            <p class="inreg-error"><%- locals.err %></p>
+        <% } %>
+
+        <% if (!locals.raspuns) { %>
             <%- include("../fragmente/formular", {action: "/inreg"}) %>
         <% } %>
+
         <% if(locals.raspuns) { %>
             <%- locals.raspuns + "<br/>" %>
         <% } %>
-        <% if(locals.err) { %>
-            <%- locals.err %>
-        <% } %>
+
     </div>
 </main>
 

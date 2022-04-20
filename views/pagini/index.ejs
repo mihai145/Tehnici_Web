@@ -70,6 +70,26 @@
         <!--Buton toggle theme-->
         <button id="toggle-theme">Schimba tema site-ului!</button>
 
+        <% if(!locals.utilizator) { %>
+            <form id="form_login" method="post" class="date" action="/login" enctype="multipart/form-data">
+                <p>
+                    <label>
+                        Username: <input type="text" name="username" id="inp-username"
+                                         value="prof<%= Math.floor(Math.random() * 100000) %>" required
+                                         pattern="[A-Za-z0-9]+">
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        Parola: <input id="parl" type="password" required name="parola" value="">
+                    </label>
+                </p>
+                <p>
+                    <input type="submit" value="Login">
+                </p>
+            </form>
+        <% } %>
+
         <p>Aici puteți găsi tot ceea ce doriți. În materie de literatură!</p>
 
         <ol>
@@ -224,15 +244,15 @@
     <!--    Sectiunea pentru utilizatori-->
     <section id="utilizatori">
         <p>
-            IP utilizator: <%= ip %>
+            IP utilizator: <%= locals.ip %>
             <br/>
             <br/>
 
             Vectorul [
             <% let sum = 0; %>
-            <% for(let i = 0; i < vector.length; i++) { %>
-                <%- vector[i] %>,
-                <% sum += vector[i] %>
+            <% for(let i = 0; i < locals.vector.length; i++) { %>
+                <%- locals.vector[i] %>,
+                <% sum += locals.vector[i] %>
             <% } %>
             ] are suma elementelor <%- sum %>.
 

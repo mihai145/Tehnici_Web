@@ -9,17 +9,17 @@ const sharp = require('sharp');
 const formidable = require('formidable');
 const crypto = require('crypto');
 const session = require('express-session');
+const nodemailer = require('nodemailer');
+
+app.use(session({
+    secret: 'abcdefg',      //folosit de express session pentru criptarea id-ului de sesiune
+    resave: true,
+    saveUninitialized: false
+}));
 
 /* DB Setup */
 const {Client} = require('pg');
-// const client = new Client({
-//     database: "proiect_cartianul",
-//     user: "mihai145",
-//     password: "mihai145",
-//     host: "localhost",
-//     port: 5432,
-// });
-const client = new Client({
+const client = (process.env.ONLINE) ? new Client({
     database: "d1o6io0om1nthn",
     user: "xyvpbfwgmsvxny",
     password: "1f70202fc346cec5ca700c27cf39f837004694e4f3de4ae6044064feba2a1d13",
@@ -28,6 +28,12 @@ const client = new Client({
     ssl: {
         rejectUnauthorized: false
     }
+}) : new Client({
+    database: "proiect_cartianul",
+    user: "mihai145",
+    password: "mihai145",
+    host: "localhost",
+    port: 5432,
 });
 client.connect();
 
@@ -36,6 +42,7 @@ const obGlobal = {
     obImagini: null,
     obErori: null,
     tipuriCarti: null,
+    emailServer: 'magazinulcartianultw@gmail.com'
 }
 /* Initializare tipuri carti */
 client.query("select * from unnest(enum_range(null::tip_carti))", (err, tipuriRes) => {
@@ -54,8 +61,32 @@ app.use("/resurse", express.static(__dirname + "/resurse"));
 /* Tipuri carti */
 app.use("/*", (req, res, next) => {
     res.locals.tipuriCarti = obGlobal.tipuriCarti;
+    res.locals.utilizator = req.session.utilizator;
     next();
 });
+
+const trimiteMail = async (email, subiect, mesajText, mesajHtml, atasamente = []) => {
+    var transp = nodemailer.createTransport({
+        service: "gmail",
+        secure: false,
+        auth: {
+            user: obGlobal.emailServer,
+            pass: "jpotebbvqaqtkpfo"
+        },
+        tls: {
+            rejectUnauthorized: false
+        }
+    });
+
+    await transp.sendMail({
+        from: obGlobal.emailServer,
+        to: email,
+        subject: subiect,
+        text: mesajText,
+        html: mesajHtml,
+        attachments: atasamente
+    });
+}
 
 app.get(["/", "/index", "/home"], (req, res) => {
     res.render("pagini/index", {
@@ -101,14 +132,103 @@ app.post("/inreg", (req, res) => {
     const formular = new formidable.IncomingForm();
     formular.parse(req, (err, campuriText, campuriFisier) => {
         const parola_criptata = crypto.scryptSync(campuriText.parola, salt, 64).toString('hex');
-        const comanda_inserare = `insert into utilizatori (username, nume, prenume, parola, email, culoare_chat) values ('${campuriText.username}','${campuriText.nume}','${campuriText.prenume}','${parola_criptata}','${campuriText.email}','${campuriText.culoare_chat}')`;
-        client.query(comanda_inserare, (err, res) => {
-            if (err) {
+
+        //Validari
+        let eroare = "";
+        if (campuriText.username === "") {
+            eroare += "Username necompletat!\n";
+        }
+        if (campuriText.nume === "") {
+            eroare += "Nume necompletat!\n";
+        }
+        if (campuriText.prenume === "") {
+            eroare += "Prenume necompletat!\n";
+        }
+        if (campuriText.email === "") {
+            eroare += "Email necompletat!\n";
+        }
+        if (campuriText.parola === "") {
+            eroare += "Parola necompletata!\n";
+        }
+        if (!campuriText.username.match(new RegExp("^[A-Za-z0-9]+$"))) {
+            eroare += "Username contine si caractere nealfanumerice!\n";
+        }
+        if (campuriText.parola !== campuriText.rparola) {
+            eroare += "Cele doua parole nu se potrivesc!\n";
+        }
+        if (!campuriText.email.includes("@")) {
+            eroare += "Email invalid!\n";
+        }
+
+        if (eroare !== "") {
+            res.render("pagini/inregistrare", {
+                err: eroare
+            });
+            return;
+        }
+
+        const query_utilizator = `select username from utilizatori where username='${campuriText.username}'`;
+        client.query(query_utilizator, (err_0, res_0) => {
+            if (err_0) {
                 console.log(err);
+                res.render("pagini/inregistrare", {
+                    err: "Eroare baza de date"
+                });
+            } else if (res_0.rows.length !== 0) {
+                eroare += "Username-ul este deja folosit\n";
+                res.render("pagini/inregistrare", {
+                    err: eroare
+                });
+            } else {
+                const comanda_inserare = `insert into utilizatori (username, nume, prenume, parola, email, culoare_chat) values ('${campuriText.username}','${campuriText.nume}','${campuriText.prenume}','${parola_criptata}','${campuriText.email}','${campuriText.culoare_chat}')`;
+                client.query(comanda_inserare, (err_1, res_1) => {
+                    if (err_1) {
+                        console.log(err_1);
+                        res.render("pagini/inregistrare", {
+                            err: "Eroare baza de date"
+                        });
+                    } else {
+                        res.render("pagini/inregistrare", {
+                            raspuns: "Datele au fost introduse"
+                        });
+                        trimiteMail(campuriText.email, "Te-ai inregistrat", "Bun venit", "<em>Hello</em>", []);
+                    }
+                });
             }
         });
-        res.redirect("/");
     });
+});
+
+app.post("/login", (req, res) => {
+    const formular = new formidable.IncomingForm();
+    formular.parse(req, (err, campuriText, campuriFisier) => {
+        const parola_criptata = crypto.scryptSync(campuriText.parola, salt, 64).toString('hex');
+        const query_select = `select * from utilizatori where username='${campuriText.username}' and parola='${parola_criptata}'`;
+        client.query(query_select, (err, query_res) => {
+            if (err) {
+                console.log(err);
+            } else {
+                if (query_res.rows.length === 1) {
+                    req.session.utilizator = {
+                        nume: query_res.rows[0].nume,
+                        prenume: query_res.rows[0].prenume,
+                        username: query_res.rows[0].username,
+                        email: query_res.rows[0].email,
+                        culoare_chat: query_res.rows[0].culoare_chat,
+                        rol: query_res.rows[0].rol
+                    };
+                }
+            }
+
+            res.redirect("/index");
+        });
+    });
+});
+
+app.get("/logout", (req, res) => {
+    req.session.destroy();
+    res.locals.utilizator = null;
+    res.render("pagini/logout");
 });
 
 app.get("/*.ejs", (req, res) => {
@@ -135,7 +255,7 @@ app.get("*/galerie_animata.css", (err, res) => {
             nr_imag: 15,
             pozitii_imagini: "((1, 1), (2, 1), (2, 3), (2, 2), (1, 2), (1, 3), (3, 3), (3, 1), (3, 2), (4, 2), (4, 3), (4, 1), (5, 2), (5, 3), (5, 1))"
         }
-    ]
+    ];
 
     const index_pick = Math.floor(Math.random() * optiuni_aleatoare.length);
     const {nr_imag, pozitii_imagini} = optiuni_aleatoare[index_pick];
@@ -252,10 +372,13 @@ const creeazaErori = () => {
 }
 creeazaErori();
 
-const s_port = process.env.PORT || 8080;
-app.listen(s_port, () => {
-   console.log("Started");
-});
+console.log("Loading...");
+setTimeout(() => {
+    const s_port = process.env.PORT || 8080;
+    app.listen(s_port, () => {
+        console.log("Started");
+    });
+}, 3500);
 
 // app.listen(8080, callback = () => {
 //     console.log("Serverul asculta pe portul 8080...");

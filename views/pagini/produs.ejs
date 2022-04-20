@@ -6,7 +6,7 @@
           content="Carte vanduta de Magazinul Cartianul">
     <meta name="keywords" content="magazinul, Cartianul, carte, detalii">
 
-    <title><%- prod.nume %></title>
+    <title><%- locals.prod.nume %></title>
 
     <%- include("../fragmente/head") %>
 
@@ -25,22 +25,22 @@
         <h2>Pagină carte</h2>
 
         <article id="art-produs">
-            <h3><span class="nume"><%- prod.nume %></span></h3>
+            <h3><span class="nume"><%- locals.prod.nume %></span></h3>
 
-            <p>Autor: <span class="autor"><%- prod.autor %> </span></p>
-            <p>Pret: <span class="pret"><%- prod.pret %> </span></p>
-            <p>Descriere: <span class="descriere"><%- prod.descriere %> </span></p>
-            <p>Numar de pagini: <span class="nr-pagini"><%- prod.nr_pagini %> </span></p>
-            <p>Tip: <span class="tip"><%- prod.tip %> </span></p>
-            <p>Categorie: <span class="categorie"><%- prod.categorie %> </span></p>
-            <p>Genuri literare: <span class="genuri-literare"><%- prod.genuri_literare %> </span></p>
-            <p>Coperta: <span class="coperta"><%- prod.coperta %> </span></p>
-            <p>Pentru copii: <span class="pt_diabetici"><%- prod.pentru_copii %> </span></p>
-            <p>Data adăugare: <span class="categorie"><%- prod.data_adaugare %> </span></p>
+            <p>Autor: <span class="autor"><%- locals.prod.autor %> </span></p>
+            <p>Pret: <span class="pret"><%- locals.prod.pret %> </span></p>
+            <p>Descriere: <span class="descriere"><%- locals.prod.descriere %> </span></p>
+            <p>Numar de pagini: <span class="nr-pagini"><%- locals.prod.nr_pagini %> </span></p>
+            <p>Tip: <span class="tip"><%- locals.prod.tip %> </span></p>
+            <p>Categorie: <span class="categorie"><%- locals.prod.categorie %> </span></p>
+            <p>Genuri literare: <span class="genuri-literare"><%- locals.prod.genuri_literare %> </span></p>
+            <p>Coperta: <span class="coperta"><%- locals.prod.coperta %> </span></p>
+            <p>Pentru copii: <span class="pt_diabetici"><%- locals.prod.pentru_copii %> </span></p>
+            <p>Data adăugare: <span class="categorie"><%- locals.prod.data_adaugare %> </span></p>
 
             <figure>
-                <img src="/resurse/imagini/produse/<%- prod.imagine %>"
-                     alt="[imagine <%- prod.nume %>]"/>
+                <img src="/resurse/imagini/produse/<%- locals.prod.imagine %>"
+                     alt="[imagine <%- locals.prod.nume %>]"/>
             </figure>
 
         </article>

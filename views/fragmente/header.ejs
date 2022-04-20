@@ -25,7 +25,7 @@
                     <div class="submenu-label">Catalog</div>
                     <ul class="submenu">
                         <li><a href="/produse">Toate</a></li>
-                        <% for (const tip of tipuriCarti) { %>
+                        <% for (const tip of locals.tipuriCarti) { %>
                             <li><a href="/produse?tip=<%- tip.unnest %>"><%- tip.unnest %></a></li>
                         <% } %>
                     </ul>
@@ -36,9 +36,19 @@
                 <li>
                     <a href="/">Cos</a>
                 </li>
-                <li>
-                    <a href="/inregistrare">Inregistrare</a>
-                </li>
+                <% if(!locals.utilizator) { %>
+                    <li>
+                        <a href="/inregistrare">Inregistrare</a>
+                    </li>
+                <% } else { %>
+                    <li class="submenu-head">
+                        <div class="submenu-label">Salut, <%- locals.utilizator.username %></div>
+                        <ul class="submenu">
+                            <li><a href="/profil">Profil</a></li>
+                            <li><a href="/logout">Logout</a></li>
+                        </ul>
+                    </li>
+                <% } %>
             </ul>
         </nav>
     </div>

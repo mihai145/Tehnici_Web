@@ -8,16 +8,16 @@
 
     <script>
         // populez inputurile din pagina de profil cu datele din tabel (incarcate prin EJS)
-        window.addEventListener("DOMContentLoaded", function () {
+        window.addEventListener("DOMContentLoaded", () => {
             document.getElementById("inp-username").value = "<%= locals.utilizator.username %>";
             document.getElementById("inp-username").readOnly = true;
             document.getElementById("inp-nume").value = "<%= locals.utilizator.nume %>";
             document.getElementById("inp-prenume").value = "<%= locals.utilizator.prenume %>";
             document.getElementById("inp-email").value = "<%= locals.utilizator.email %>";
             document.getElementById("p-reintrod").remove();
-            var optiuni = document.getElementById("sel-culoare").options
+            const optiuni = document.getElementById("sel-culoare").options;
             for (let opt of optiuni)
-                if (opt.value == "<%= locals.utilizator.culoare_chat %>")
+                if (opt.value === "<%= locals.utilizator.culoare_chat %>")
                     opt.selected = true;
         });
     </script>
@@ -31,10 +31,8 @@
 </header>
 
 <main>
-
     <section>
         <h2>Profil</h2>
-        <p>Mănânci prea multe prajituri și știi și tu asta!</p>
         <p><%= locals.raspuns %></p>
     </section>
     <%- include("../fragmente/formular",{action:"/profil"}) %>

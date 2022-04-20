@@ -47,22 +47,22 @@
 
 
         <div class="container-inp-pret">
-            <label> Pret minim: <input type="range" id="inp-pret-min" value="<%- Math.floor(min_price) %>"
-                                       min="<%- Math.floor(min_price) %>"
-                                       max="<%- Math.ceil(max_price) %>"> <span
-                        id="infoRangeMin"> (<%- Math.floor(min_price) %>) </span></label>
+            <label> Pret minim: <input type="range" id="inp-pret-min" value="<%- Math.floor(locals.min_price) %>"
+                                       min="<%- Math.floor(locals.min_price) %>"
+                                       max="<%- Math.ceil(locals.max_price) %>"> <span
+                        id="infoRangeMin"> (<%- Math.floor(locals.min_price) %>) </span></label>
             <br>
-            <label> Pret maxim: <input type="range" id="inp-pret-max" value="<%- Math.ceil(max_price) %>"
-                                       min="<%- Math.floor(min_price) %>"
-                                       max="<%- Math.ceil(max_price) %>"> <span
-                        id="infoRangeMax"> (<%- Math.ceil(max_price) %>) </span></label>
+            <label> Pret maxim: <input type="range" id="inp-pret-max" value="<%- Math.ceil(locals.max_price) %>"
+                                       min="<%- Math.floor(locals.min_price) %>"
+                                       max="<%- Math.ceil(locals.max_price) %>"> <span
+                        id="infoRangeMax"> (<%- Math.ceil(locals.max_price) %>) </span></label>
         </div>
 
         <div class="container-inp-categorie">
             <label>Select simplu:
                 <select id="inp-categorie">
                     <option id="sel-toate" selected value="toate">Toate</option>
-                    <% for (const opt of optiuni) { %>
+                    <% for (const opt of locals.optiuni) { %>
                         <option value="<%- opt.unnest %>"><%- opt.unnest %> </option>
                     <% } %>
                 </select>
@@ -72,7 +72,7 @@
         <div class="container-inp-gen-literar">
             <label>Genuri literare:
                 <select id="inp-gen-literar" multiple>
-                    <% for (const gen of genuri) { %>
+                    <% for (const gen of locals.genuri) { %>
                         <option value="<%- gen.unnest %>"><%- gen.unnest %> </option>
                     <% } %>
                 </select>
@@ -95,10 +95,10 @@
 
     <!--Sectiune produse-->
     <section id="produse">
-        <h2 id="heading-tip-produse"><%- tip %></h2>
+        <h2 id="heading-tip-produse"><%- locals.tip %></h2>
 
         <div class="grid-produse">
-            <% for(const prod of produse) { %>
+            <% for(const prod of locals.produse) { %>
                 <article class="produs">
                     <h3 class="nume">Nume: <a href="/produs/<%- prod.id %>"><span
                                     class="val-nume"><%- prod.nume %></span></a></h3>

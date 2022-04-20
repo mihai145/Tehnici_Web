@@ -36,3 +36,14 @@
     left: 238px;
     bottom: 12px;
 }
+
+#toggle-theme {
+    margin-bottom: var(--section-padding);
+}
+
+/* Formular login */
+#form_login {
+    padding: var(--section-padding);
+    border: 1px solid black;
+    border-radius: var(--section-padding);
+}

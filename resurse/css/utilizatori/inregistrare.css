@@ -5,3 +5,14 @@ div.afisaj {
 div.afisaj > h1 {
     padding: 0;
 }
+
+.inreg-error {
+    font-weight: bold;
+}
+
+/* Formular inregistrare */
+#form_inreg {
+    padding: var(--section-padding);
+    border: 1px solid black;
+    border-radius: var(--section-padding);
+}
