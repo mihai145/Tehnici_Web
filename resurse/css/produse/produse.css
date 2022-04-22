@@ -24,6 +24,14 @@ main {
     height: 100px;
 }
 
+.filter-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    text-align: center;
+}
+
 /* Sectiune produse */
 #heading-tip-produse {
     text-align: center;
@@ -80,22 +88,8 @@ main {
     border: 1px solid var(--culoare_text);
 }
 
-/* Grid produse */
-.grid-produse {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    padding: var(--section-padding);
-}
-
-.grid-produse > .produs {
-    margin: var(--section-padding);
-    width: 40%;
-}
-
-/* Grid produse pentru ecran mediu si mic */
-@media screen and (max-width: 850px) {
-    .grid-produse > .produs {
-        width: 80%;
-    }
+/* Sectiune produse */
+#product-section {
+    margin: 10px;
+    padding: 10px;
 }

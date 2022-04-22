@@ -19,8 +19,8 @@ window.addEventListener("load", () => {
     const btn_calculeaza = document.getElementById("calculeaza");
 
     /* Produse */
-    const produse = document.querySelectorAll("article.produs");
-    const grid_produse = document.getElementsByClassName("grid-produse")[0];
+    const produse = document.querySelectorAll("#product-section .accordion-item");
+    const grid_produse = document.querySelectorAll("#product-section > .accordion")[0];
 
     /* Obtinem nr_pagini din radio button-ul selectat */
     const get_nr_pagini = () => {

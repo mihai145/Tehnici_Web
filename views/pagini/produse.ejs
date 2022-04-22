@@ -26,156 +26,178 @@
 
     <!--Sectiune filtre-->
     <section id="filter-section">
-        <div class="container-inp-nume">
-            <label> Titlu: <input type="text" id="inp-nume"></label>
+        <div class="row">
+            <div class="col-12 col-lg-4 filter-col">
+                <div class="container-inp-nume">
+                    <label> Titlu: <input type="text" id="inp-nume"></label>
+                </div>
+
+                <div class="container-inp-nr-pag"> Numar de pagini:
+                    <p><label>Cateva ore (pagini &lt; 100)
+                            <input id="i_rad1" name="gr_rad" value="0:100" type="radio"/>
+                        </label></p>
+                    <p><label>Cateva zile (100 &le; pagini &lt; 200)
+                            <input id="i_rad2" name="gr_rad" value="100:200" type="radio"/>
+                        </label>
+                    <p><label>O saptamana (200 &le; pagini)
+                            <input id="i_rad3" name="gr_rad" value="200:1000000" type="radio"/>
+                        </label>
+                    <p><label>Toate
+                            <input id="i_rad4" checked name="gr_rad" value="toate" type="radio"/>
+                        </label>
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-4 filter-col">
+                <div class="container-inp-pret">
+                    <label> Pret minim: <input type="range" id="inp-pret-min"
+                                               value="<%- Math.floor(locals.min_price) %>"
+                                               min="<%- Math.floor(locals.min_price) %>"
+                                               max="<%- Math.ceil(locals.max_price) %>"> <span
+                                id="infoRangeMin"> (<%- Math.floor(locals.min_price) %>) </span></label>
+                    <br>
+                    <label> Pret maxim: <input type="range" id="inp-pret-max" value="<%- Math.ceil(locals.max_price) %>"
+                                               min="<%- Math.floor(locals.min_price) %>"
+                                               max="<%- Math.ceil(locals.max_price) %>"> <span
+                                id="infoRangeMax"> (<%- Math.ceil(locals.max_price) %>) </span></label>
+                </div>
+
+                <div class="container-inp-categorie">
+                    <label>Categorie:
+                        <select id="inp-categorie">
+                            <option id="sel-toate" selected value="toate">Toate</option>
+                            <% for (const opt of locals.optiuni) { %>
+                                <option value="<%- opt.unnest %>"><%- opt.unnest %> </option>
+                            <% } %>
+                        </select>
+                    </label>
+                </div>
+
+                <div class="container-inp-gen-literar">
+                    <label>Genuri literare:
+                        <select id="inp-gen-literar" multiple>
+                            <% for (const gen of locals.genuri) { %>
+                                <option value="<%- gen.unnest %>"><%- gen.unnest %> </option>
+                            <% } %>
+                        </select>
+                    </label>
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-4 filter-col">
+                <div class="container-butoane">
+                    <p>
+                        <button id="filtrare" class="btn btn-success">Filtreaza</button>
+                        <button id="resetare" class="btn btn-danger">Reseteaza</button>
+                        <br/>
+                        <button id="sortCrescNume" class="btn btn-info">Sorteaza crescator</button>
+                        <button id="sortDescrescNume" class="btn btn-info">Sorteaza descrescator</button>
+                        <br/>
+                        <button id="calculeaza" class="btn btn-success">Calculeaza</button>
+                    </p>
+                </div>
+            </div>
         </div>
-
-        <div class="container-inp-nr-pag"> Numar de pagini:
-            <p><label>Cateva ore (pagini &lt; 100)
-                    <input id="i_rad1" name="gr_rad" value="0:100" type="radio"/>
-                </label></p>
-            <p><label>Cateva zile (100 &le; pagini &lt; 200)
-                    <input id="i_rad2" name="gr_rad" value="100:200" type="radio"/>
-                </label>
-            <p><label>O saptamana (200 &le; pagini)
-                    <input id="i_rad3" name="gr_rad" value="200:1000000" type="radio"/>
-                </label>
-            <p><label>Toate
-                    <input id="i_rad4" checked name="gr_rad" value="toate" type="radio"/>
-                </label>
-        </div>
-
-
-        <div class="container-inp-pret">
-            <label> Pret minim: <input type="range" id="inp-pret-min" value="<%- Math.floor(locals.min_price) %>"
-                                       min="<%- Math.floor(locals.min_price) %>"
-                                       max="<%- Math.ceil(locals.max_price) %>"> <span
-                        id="infoRangeMin"> (<%- Math.floor(locals.min_price) %>) </span></label>
-            <br>
-            <label> Pret maxim: <input type="range" id="inp-pret-max" value="<%- Math.ceil(locals.max_price) %>"
-                                       min="<%- Math.floor(locals.min_price) %>"
-                                       max="<%- Math.ceil(locals.max_price) %>"> <span
-                        id="infoRangeMax"> (<%- Math.ceil(locals.max_price) %>) </span></label>
-        </div>
-
-        <div class="container-inp-categorie">
-            <label>Select simplu:
-                <select id="inp-categorie">
-                    <option id="sel-toate" selected value="toate">Toate</option>
-                    <% for (const opt of locals.optiuni) { %>
-                        <option value="<%- opt.unnest %>"><%- opt.unnest %> </option>
-                    <% } %>
-                </select>
-            </label>
-        </div>
-
-        <div class="container-inp-gen-literar">
-            <label>Genuri literare:
-                <select id="inp-gen-literar" multiple>
-                    <% for (const gen of locals.genuri) { %>
-                        <option value="<%- gen.unnest %>"><%- gen.unnest %> </option>
-                    <% } %>
-                </select>
-            </label>
-        </div>
-
-        <div class="container-butoane">
-            <p>
-                <button id="filtrare">Filtreaza</button>
-                <button id="resetare">Reseteaza</button>
-                <br/>
-                <button id="sortCrescNume">Sorteaza crescator</button>
-                <button id="sortDescrescNume">Sorteaza descrescator</button>
-                <br/>
-                <button id="calculeaza">Calculeaza</button>
-            </p>
-        </div>
-
     </section>
 
     <!--Sectiune produse-->
-    <section id="produse">
+    <section id="product-section">
         <h2 id="heading-tip-produse"><%- locals.tip %></h2>
 
-        <div class="grid-produse">
+        <div class="accordion" id="accordionProduse">
             <% for(const prod of locals.produse) { %>
-                <article class="produs">
-                    <h3 class="nume">Nume: <a href="/produs/<%- prod.id %>"><span
-                                    class="val-nume"><%- prod.nume %></span></a></h3>
-                    <h4>Autor: <%- prod.autor %> </h4>
-                    <p>Descriere: <span class="val-descriere"><%- prod.descriere %></span></p>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading<%- prod.id %>">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapse<%- prod.id %>" aria-expanded="true"
+                            aria-controls="collapse<%- prod.id %>">
+                        <%- prod.nume %> - <%- prod.autor %>
+                    </button>
+                </h2>
+                <div id="collapse<%- prod.id %>" class="accordion-collapse collapse"
+                     aria-labelledby="heading<%- prod.id %>"
+                     data-bs-parent="#accordionProduse">
+                    <div class="accordion-body">
+                        <article class="produs">
+                            <h3 class="nume">Nume: <a href="/produs/<%- prod.id %>"><span
+                                            class="val-nume"><%- prod.nume %></span></a></h3>
+                            <h4>Autor: <%- prod.autor %> </h4>
+                            <p>Descriere: <span class="val-descriere"><%- prod.descriere %></span></p>
 
-                    <div id="info-img-container">
-                        <div class="info-prod">
-                            <table>
-                                <tbody>
-                                <tr>
-                                    <td>
-                                        Pret
-                                    </td>
-                                    <td>
-                                        <span class="val-pret"><%- prod.pret %></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        Numar de pagini
-                                    </td>
-                                    <td>
-                                        <span class="val-nr-pagini"><%- prod.nr_pagini %></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        Categorie:
-                                    </td>
-                                    <td>
-                                        <span class="val-categorie"><%- prod.categorie %></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        Genuri literare:
-                                    </td>
-                                    <td>
-                                        <span class="val-genuri-literare"><%- prod.genuri_literare %></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        Pentru copii:
-                                    </td>
-                                    <td>
-                                        <span class="val-pentru-copii"><%- prod.pentru_copii %></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        Data adaugare:
-                                    </td>
-                                    <td>
+                            <div id="info-img-container">
+                                <div class="info-prod">
+                                    <table>
+                                        <tbody>
+                                        <tr>
+                                            <td>
+                                                Pret
+                                            </td>
+                                            <td>
+                                                <span class="val-pret"><%- prod.pret %></span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                Numar de pagini
+                                            </td>
+                                            <td>
+                                                <span class="val-nr-pagini"><%- prod.nr_pagini %></span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                Categorie:
+                                            </td>
+                                            <td>
+                                                <span class="val-categorie"><%- prod.categorie %></span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                Genuri literare:
+                                            </td>
+                                            <td>
+                                                <span class="val-genuri-literare"><%- prod.genuri_literare %></span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                Pentru copii:
+                                            </td>
+                                            <td>
+                                                <span class="val-pentru-copii"><%- prod.pentru_copii %></span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                Data adaugare:
+                                            </td>
+                                            <td>
                                         <span class="val-data-adaugare">
                                             <time><%- prod.data_adaugare.toLocaleString() %></time>
                                         </span>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
 
-                        <figure>
-                            <a href="/produs/<%- prod.id %>"><img src="/resurse/imagini/produse/<%- prod.imagine %>"
-                                                                  alt="[imagine <%- prod.nume %>]"/></a>
-                        </figure>
+                                <figure>
+                                    <a href="/produs/<%- prod.id %>"><img
+                                                src="/resurse/imagini/produse/<%- prod.imagine %>"
+                                                alt="[imagine <%- prod.nume %>]"/></a>
+                                </figure>
+                            </div>
+
+                            <label class="selecteaza-cos">
+                                Selectează:<br/>
+                                <input type="checkbox" class="select-cos" value="<%- prod.id %>" autocomplete="off">
+                            </label>
+
+                        </article>
                     </div>
-
-                    <label class="selecteaza-cos">
-                        Selectează:<br/>
-                        <input type="checkbox" class="select-cos" value="<%- prod.id %>" autocomplete="off">
-                    </label>
-
-                </article>
-
+                </div>
+            </div>
             <% } %>
         </div>
     </section>
