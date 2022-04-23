@@ -1,9 +1,11 @@
 --
 -- PostgreSQL database dump
 --
+
 -- Dumped from database version 14.2
 -- Dumped by pg_dump version 14.2
--- Started on 2022-04-14 13:31:56
+
+-- Started on 2022-04-22 18:46:16
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -185,7 +187,8 @@ CREATE TABLE public.utilizatori (
     culoare_chat character varying(50) NOT NULL,
     data_adaugare timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
     cod character varying(200),
-    confirmat_mail boolean DEFAULT false
+    confirmat_mail boolean DEFAULT false,
+    telefon character varying(20)
 );
 
 
@@ -272,7 +275,6 @@ INSERT INTO public.carti (id, nume, autor, descriere, pret, nr_pagini, categorie
 -- Data for Name: utilizatori; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.utilizatori (id, username, nume, prenume, parola, rol, email, culoare_chat, data_adaugare, cod, confirmat_mail) VALUES (3, 'prof78292', 'Gogulescu', 'Gogu', '15a3e13b045ac210a1fcbfc349e5e021f0747ca3a27ab9cd681579e195f9bb0fb2c51bcbb0b84284450f7f005366c351f52ae63b4b5e96cc98809c122ebc1a5f', 'comun', 'profprofprof007@gmail.com', 'green', '2022-04-13 07:47:01.831889', NULL, false);
 
 
 --
@@ -299,7 +301,7 @@ SELECT pg_catalog.setval('public.carti_id_seq', 10, true);
 -- Name: utilizatori_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.utilizatori_id_seq', 3, true);
+SELECT pg_catalog.setval('public.utilizatori_id_seq', 17, true);
 
 
 --
@@ -374,7 +376,7 @@ GRANT ALL ON TABLE public.carti TO mihai145;
 GRANT ALL ON SEQUENCE public.carti_id_seq TO mihai145;
 
 
--- Completed on 2022-04-14 13:31:57
+-- Completed on 2022-04-22 18:46:17
 
 --
 -- PostgreSQL database dump complete
