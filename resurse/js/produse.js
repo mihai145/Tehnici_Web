@@ -1,4 +1,43 @@
 window.addEventListener("load", () => {
+    /* Schimbam tema acordeoanelor pentru a fi conforma cu tema site-ului */
+    const _tema = localStorage.getItem("tema");
+    const butoane_acordeon = document.querySelectorAll("#product-section .accordion-button");
+    const body_acordeoane = document.querySelectorAll("#product-section .accordion-body");
+
+    for (const buton_acordeon of butoane_acordeon) {
+        if (_tema) {
+            buton_acordeon.classList.add("bg-dark");
+            buton_acordeon.classList.add("text-white");
+        }
+    }
+    for (const body_acordeon of body_acordeoane) {
+        if (_tema) {
+            body_acordeon.classList.add("bg-dark");
+            body_acordeon.classList.add("text-white");
+        }
+    }
+
+    /* Local storage pentru acordeoanele produselor */
+    const acordeon_deschis = localStorage.getItem("acordeon");
+    if (acordeon_deschis) {
+        const acordeon_deschis_element = document.getElementById(`collapse${acordeon_deschis}`);
+        if (acordeon_deschis_element) {
+            acordeon_deschis_element.classList.add("show");
+        }
+    }
+
+    for (const buton_acordeon of butoane_acordeon) {
+        const acordeon_id = buton_acordeon.id.slice(17);
+        buton_acordeon.onclick = () => {
+            const currently_opened = localStorage.getItem("acordeon");
+            if (!currently_opened || currently_opened !== acordeon_id) {
+                localStorage.setItem("acordeon", acordeon_id);
+            } else {
+                localStorage.removeItem("acordeon");
+            }
+        }
+    }
+
     /* Inputs */
     const inp_name = document.getElementById("inp-nume");
     const range_min = document.getElementById("inp-pret-min");

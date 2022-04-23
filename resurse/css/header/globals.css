@@ -24,8 +24,8 @@ body.dark {
 }
 
 body {
-    background-color: var(--culoare_background);
-    color: var(--culoare_text);
+    background-color: var(--culoare_background) !important;
+    color: var(--culoare_text) !important;
     margin: 0;
     padding: 0;
     font-family: 'Roboto', sans-serif;

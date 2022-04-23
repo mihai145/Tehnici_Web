@@ -91,9 +91,9 @@ const trimiteMail = async (email, subiect, mesajText, mesajHtml, atasamente = []
 app.get(["/", "/index", "/home"], (req, res) => {
     res.render("pagini/index", {
         ip: req.ip,
-        vector: [10, 20, 30],
         imagini_galerie_statica: imaginiFereastraTimp(),    /* filtram dupa timp */
         imagini_galerie_animata: obGlobal.obImagini.imagini,         /* trimitem toate imaginile */
+        mesaj_login: req.query["res"],                      /* rezultatul logarii daca este cazul */
     });
 });
 
@@ -180,7 +180,7 @@ app.post("/inreg", (req, res) => {
                     err: eroare
                 });
             } else {
-                const comanda_inserare = `insert into utilizatori (username, nume, prenume, parola, email, culoare_chat) values ('${campuriText.username}','${campuriText.nume}','${campuriText.prenume}','${parola_criptata}','${campuriText.email}','${campuriText.culoare_chat}')`;
+                const comanda_inserare = `insert into utilizatori (username, nume, prenume, parola, email, culoare_chat, telefon) values ('${campuriText.username}','${campuriText.nume}','${campuriText.prenume}','${parola_criptata}','${campuriText.email}','${campuriText.culoare_chat}', '${campuriText.telefon}') RETURNING data_adaugare`;
                 client.query(comanda_inserare, (err_1, res_1) => {
                     if (err_1) {
                         console.log(err_1);
@@ -188,15 +188,63 @@ app.post("/inreg", (req, res) => {
                             err: "Eroare baza de date"
                         });
                     } else {
-                        res.render("pagini/inregistrare", {
-                            raspuns: "Datele au fost introduse"
+                        const data_adaugare = res_1.rows[0].data_adaugare;
+
+                        let token = "";
+                        for (let i = 1; i <= 50; i++) {
+                            token += String.fromCharCode(Math.floor(Math.random() * 26) + "a".charCodeAt(0));
+                        }
+
+                        const comanda_inserare_token = `update utilizatori set cod='${token}' where username='${campuriText.username}'`;
+                        client.query(comanda_inserare_token, (err_2, res_2) => {
+                            if (err_2) {
+                                console.log(err_2);
+                                res.render("pagini/inregistrare", {
+                                    err: "Eroare baza de date"
+                                });
+                            } else {
+                                res.render("pagini/inregistrare", {
+                                    raspuns: "Datele au fost introduse"
+                                });
+                                trimiteMail(campuriText.email, `Salut, stimate ${campuriText.nume}`, "Bun venit!", `Username-ul tau este ${campuriText.username} pe site-ul <strong><i><em>https://afternoon-sea-55888.herokuapp.com</em></i></strong>. <br/> Pentru a confirma emailul, accesati <a href='https://afternoon-sea-55888.herokuapp.com/cod_mail/${token}-${data_adaugare.getTime()}/${campuriText.username}'>acest link</a>`, []);
+                            }
                         });
-                        trimiteMail(campuriText.email, "Te-ai inregistrat", "Bun venit", "<em>Hello</em>", []);
                     }
                 });
             }
         });
     });
+});
+
+app.get("/cod_mail/:token1_2/:username", (req, res) => {
+    const comanda_lookup = `SELECT * from utilizatori where username='${req.params["username"]}'`;
+    client.query(comanda_lookup, (err, queryRes) => {
+        if (err) {
+            res.render("pagini/token", {
+                mesaj: "Eroare baza de date!"
+            });
+        } else {
+            const [token_1, insert_time] = req.params["token1_2"].split("-");
+            if (token_1 === queryRes.rows[0].cod && insert_time == queryRes.rows[0].data_adaugare.getTime()) {
+                client.query(`update utilizatori set confirmat_mail='true' where username='${req.params["username"]}'`, (err_1, queryRes_1) => {
+                    console.log(err_1);
+                    if (err_1) {
+                        res.render("pagini/token", {
+                            mesaj: "Eroare baza de date la confirmare! Incercati din nou."
+                        });
+                    } else {
+                        res.render("pagini/token", {
+                            mesaj: "Ati confirmat mail-ul!"
+                        });
+                    }
+                });
+            } else {
+                res.render("pagini/token", {
+                    mesaj: "Link invalid! Incercati din nou!"
+                });
+            }
+        }
+    })
 });
 
 app.post("/login", (req, res) => {
@@ -207,20 +255,27 @@ app.post("/login", (req, res) => {
         client.query(query_select, (err, query_res) => {
             if (err) {
                 console.log(err);
+                res.redirect("/index?res=eroare_bd");
             } else {
                 if (query_res.rows.length === 1) {
-                    req.session.utilizator = {
-                        nume: query_res.rows[0].nume,
-                        prenume: query_res.rows[0].prenume,
-                        username: query_res.rows[0].username,
-                        email: query_res.rows[0].email,
-                        culoare_chat: query_res.rows[0].culoare_chat,
-                        rol: query_res.rows[0].rol
-                    };
+                    if (query_res.rows[0].confirmat_mail === false) {
+                        res.redirect("/index?res=mail_neconfirmat");
+                    } else {
+                        req.session.utilizator = {
+                            nume: query_res.rows[0].nume,
+                            prenume: query_res.rows[0].prenume,
+                            username: query_res.rows[0].username,
+                            email: query_res.rows[0].email,
+                            culoare_chat: query_res.rows[0].culoare_chat,
+                            telefon: query_res.rows[0].telefon,
+                            rol: query_res.rows[0].rol
+                        };
+                        res.redirect("/index?res=login_success");
+                    }
+                } else {
+                    res.redirect("/index?res=username_parola_incorecta");
                 }
             }
-
-            res.redirect("/index");
         });
     });
 });
@@ -259,7 +314,6 @@ app.get("*/galerie_animata.css", (err, res) => {
 
     const index_pick = Math.floor(Math.random() * optiuni_aleatoare.length);
     const {nr_imag, pozitii_imagini} = optiuni_aleatoare[index_pick];
-    //console.log(nr_imag, pozitii_imagini);
 
     const stringSCSS = fs.readFileSync(__dirname + "/resurse/scss/galerie_animata_scss.txt").toString("utf8");
     const resultSCSS = ejs.render(stringSCSS, {

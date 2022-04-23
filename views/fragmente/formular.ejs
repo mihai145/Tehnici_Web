@@ -1,38 +1,38 @@
-<form id="form_inreg" method="post" class="date" action="<%= locals.action %>" enctype="multipart/form-data">
+<form id="form_inreg" method="post" class="date form-group" action="<%= locals.action %>" enctype="multipart/form-data">
     <p>
         <label>
-            Username: <input type="text" name="username" id="inp-username"
+            Username: <input type="text" name="username" id="inp-username" class="form-control"
                              value="prof<%= Math.floor(Math.random() * 100000) %>" required pattern="[A-Za-z0-9]+">
         </label>
     </p>
     <p>
         <label>
-            Nume: <input type="text" name="nume" id="inp-nume" value="Amariei" required>
+            Nume: <input type="text" name="nume" id="inp-nume" class="form-control" value="Amariei" required>
         </label>
     </p>
     <p>
         <label>
-            Prenume: <input type="text" name="prenume" id="inp-prenume" value="Ionel" required>
+            Prenume: <input type="text" name="prenume" id="inp-prenume" class="form-control" value="Ionel" required>
         </label>
     </p>
     <p>
         <label>
-            Parola: <input id="parl" type="password" name="parola" value="" required>
+            Parola: <input id="parl" class="form-control" type="password" name="parola" value="" required>
         </label>
     </p>
     <p id="p-reintrod">
         <label>
-            Reintroduceti parola: <input id="rparl" type="password" name="rparola" value="" required>
+            Reintroduceti parola: <input id="rparl" class="form-control" type="password" name="rparola" value="" required>
         </label>
     </p>
     <p>
         <label>
-            Email: <input type="text" name="email" id="inp-email" value="example@gmail.com" size="50" required>
+            Email: <input type="text" name="email" id="inp-email" class="form-control" value="example@gmail.com" size="50" required>
         </label>
     </p>
     <p>
         <label>
-            Culoare text chat: <select name="culoare_chat" id="sel-culoare">
+            Culoare text chat: <select name="culoare_chat" id="sel-culoare" class="form-control">
                 <option value="red" selected>rosu</option>
                 <option value="green">verde</option>
                 <option value="blue">albastru</option>
@@ -41,11 +41,16 @@
     </p>
     <p>
         <label>
-            Poza: <input type="file" name="poza">
+            Telefon: <input type="text" name="telefon" id="inp-telefon" class="form-control" value="+40777123">
         </label>
     </p>
     <p>
-        <input type="submit" value="Trimite">
-        <input type="reset" value="Reseteaza">
+        <label>
+            Poza: <input type="file" name="poza" class="form-control">
+        </label>
+    </p>
+    <p>
+        <input type="submit" value="Trimite" class="btn btn-success">
+        <input type="reset" value="Reseteaza" class="btn btn-danger">
     </p>
 </form>

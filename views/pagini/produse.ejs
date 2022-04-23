@@ -106,98 +106,99 @@
 
         <div class="accordion" id="accordionProduse">
             <% for(const prod of locals.produse) { %>
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="heading<%- prod.id %>">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapse<%- prod.id %>" aria-expanded="true"
-                            aria-controls="collapse<%- prod.id %>">
-                        <%- prod.nume %> - <%- prod.autor %>
-                    </button>
-                </h2>
-                <div id="collapse<%- prod.id %>" class="accordion-collapse collapse"
-                     aria-labelledby="heading<%- prod.id %>"
-                     data-bs-parent="#accordionProduse">
-                    <div class="accordion-body">
-                        <article class="produs">
-                            <h3 class="nume">Nume: <a href="/produs/<%- prod.id %>"><span
-                                            class="val-nume"><%- prod.nume %></span></a></h3>
-                            <h4>Autor: <%- prod.autor %> </h4>
-                            <p>Descriere: <span class="val-descriere"><%- prod.descriere %></span></p>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading<%- prod.id %>">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapse<%- prod.id %>" aria-expanded="true"
+                                aria-controls="collapse<%- prod.id %>"
+                                id="accordion-button-<%-prod.id%>">
+                            <%- prod.nume %> - <%- prod.autor %>
+                        </button>
+                    </h2>
+                    <div id="collapse<%- prod.id %>" class="accordion-collapse collapse"
+                         aria-labelledby="heading<%- prod.id %>"
+                         data-bs-parent="#accordionProduse">
+                        <div class="accordion-body">
+                            <article class="produs">
+                                <h3 class="nume">Nume: <a href="/produs/<%- prod.id %>"><span
+                                                class="val-nume"><%- prod.nume %></span></a></h3>
+                                <h4>Autor: <%- prod.autor %> </h4>
+                                <p>Descriere: <span class="val-descriere"><%- prod.descriere %></span></p>
 
-                            <div id="info-img-container">
-                                <div class="info-prod">
-                                    <table>
-                                        <tbody>
-                                        <tr>
-                                            <td>
-                                                Pret
-                                            </td>
-                                            <td>
-                                                <span class="val-pret"><%- prod.pret %></span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                Numar de pagini
-                                            </td>
-                                            <td>
-                                                <span class="val-nr-pagini"><%- prod.nr_pagini %></span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                Categorie:
-                                            </td>
-                                            <td>
-                                                <span class="val-categorie"><%- prod.categorie %></span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                Genuri literare:
-                                            </td>
-                                            <td>
-                                                <span class="val-genuri-literare"><%- prod.genuri_literare %></span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                Pentru copii:
-                                            </td>
-                                            <td>
-                                                <span class="val-pentru-copii"><%- prod.pentru_copii %></span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                Data adaugare:
-                                            </td>
-                                            <td>
+                                <div id="info-img-container">
+                                    <div class="info-prod">
+                                        <table>
+                                            <tbody>
+                                            <tr>
+                                                <td>
+                                                    Pret
+                                                </td>
+                                                <td>
+                                                    <span class="val-pret"><%- prod.pret %></span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    Numar de pagini
+                                                </td>
+                                                <td>
+                                                    <span class="val-nr-pagini"><%- prod.nr_pagini %></span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    Categorie:
+                                                </td>
+                                                <td>
+                                                    <span class="val-categorie"><%- prod.categorie %></span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    Genuri literare:
+                                                </td>
+                                                <td>
+                                                    <span class="val-genuri-literare"><%- prod.genuri_literare %></span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    Pentru copii:
+                                                </td>
+                                                <td>
+                                                    <span class="val-pentru-copii"><%- prod.pentru_copii %></span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    Data adaugare:
+                                                </td>
+                                                <td>
                                         <span class="val-data-adaugare">
                                             <time><%- prod.data_adaugare.toLocaleString() %></time>
                                         </span>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <figure>
+                                        <a href="/produs/<%- prod.id %>"><img
+                                                    src="/resurse/imagini/produse/<%- prod.imagine %>"
+                                                    alt="[imagine <%- prod.nume %>]"/></a>
+                                    </figure>
                                 </div>
 
-                                <figure>
-                                    <a href="/produs/<%- prod.id %>"><img
-                                                src="/resurse/imagini/produse/<%- prod.imagine %>"
-                                                alt="[imagine <%- prod.nume %>]"/></a>
-                                </figure>
-                            </div>
+                                <label class="selecteaza-cos">
+                                    Selectează:<br/>
+                                    <input type="checkbox" class="select-cos" value="<%- prod.id %>" autocomplete="off">
+                                </label>
 
-                            <label class="selecteaza-cos">
-                                Selectează:<br/>
-                                <input type="checkbox" class="select-cos" value="<%- prod.id %>" autocomplete="off">
-                            </label>
-
-                        </article>
+                            </article>
+                        </div>
                     </div>
                 </div>
-            </div>
             <% } %>
         </div>
     </section>
