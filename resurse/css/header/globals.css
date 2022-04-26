@@ -36,3 +36,10 @@ h1 {
     font-size: 3rem;
     text-shadow: var(--culoare_secundara) 1px 1px;
 }
+
+/* Formular login */
+#form_login {
+    padding: var(--section-padding);
+    border: 1px solid black;
+    border-radius: var(--section-padding);
+}

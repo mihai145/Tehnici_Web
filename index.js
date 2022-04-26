@@ -93,7 +93,7 @@ app.get(["/", "/index", "/home"], (req, res) => {
         ip: req.ip,
         imagini_galerie_statica: imaginiFereastraTimp(),    /* filtram dupa timp */
         imagini_galerie_animata: obGlobal.obImagini.imagini,         /* trimitem toate imaginile */
-        mesaj_login: req.query["res"],                      /* rezultatul logarii daca este cazul */
+        mesaj_login: req.query["result"],                      /* rezultatul logarii daca este cazul */
     });
 });
 
@@ -255,11 +255,11 @@ app.post("/login", (req, res) => {
         client.query(query_select, (err, query_res) => {
             if (err) {
                 console.log(err);
-                res.redirect("/index?res=eroare_bd");
+                res.redirect("/index?result=eroare_bd");
             } else {
                 if (query_res.rows.length === 1) {
                     if (query_res.rows[0].confirmat_mail === false) {
-                        res.redirect("/index?res=mail_neconfirmat");
+                        res.redirect("/index?result=mail_neconfirmat");
                     } else {
                         req.session.utilizator = {
                             nume: query_res.rows[0].nume,
@@ -270,10 +270,10 @@ app.post("/login", (req, res) => {
                             telefon: query_res.rows[0].telefon,
                             rol: query_res.rows[0].rol
                         };
-                        res.redirect("/index?res=login_success");
+                        res.redirect("/index?result=login_success");
                     }
                 } else {
-                    res.redirect("/index?res=username_parola_incorecta");
+                    res.redirect("/index?result=username_parola_incorecta");
                 }
             }
         });
@@ -284,6 +284,31 @@ app.get("/logout", (req, res) => {
     req.session.destroy();
     res.locals.utilizator = null;
     res.render("pagini/logout");
+});
+
+app.post("/delete_cont", (req, res) => {
+    const formular = new formidable.IncomingForm();
+    formular.parse(req, (err, campuriText) => {
+        const parola_criptata = crypto.scryptSync(campuriText.parola, salt, 64).toString('hex');
+        client.query(`select * from utilizatori where username='${req.session.utilizator.username}' and parola='${parola_criptata}'`, (err_1, res_1) => {
+            if (err_1) {
+                res.redirect("/index?result=eroare_bd");
+            } else if (res_1.rows.length === 1) {
+                client.query(`delete from utilizatori where username='${req.session.utilizator.username}'`, (err_2, res_2) => {
+                    if (err_2) {
+                        res.redirect("/index?result=eroare_bd");
+                    } else {
+                        trimiteMail(req.session.utilizator.email, `Terminare cont`, `La revedere, ${req.session.utilizator.nume}`, `Sorry to see you go!`, []);
+                        req.session.destroy();
+                        res.locals.utilizator = null;
+                        res.redirect("/index?result=success");
+                    }
+                });
+            } else {
+                res.redirect("/index?result=username_parola_incorecta");
+            }
+        });
+    });
 });
 
 app.get("/*.ejs", (req, res) => {

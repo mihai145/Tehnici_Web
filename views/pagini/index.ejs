@@ -70,38 +70,6 @@
         <!--Buton toggle theme-->
         <button id="toggle-theme">Schimba tema site-ului!</button>
 
-        <% if(locals.mesaj_login) { %>
-            <% if(locals.mesaj_login === "eroare_bd") { %>
-                <p>Eroare la baza de date in timpul logarii. Incercati din nou...</p>
-            <% } else if(locals.mesaj_login === "mail_neconfirmat") { %>
-                <p>Mailul dvs. nu este inca confirmat! Verificati-va inboxul si folderul spam.</p>
-            <% } else if(locals.mesaj_login === "username_parola_incorecta") { %>
-                <p>Username sau parola incorecta.</p>
-            <% } else if(locals.mesaj_login === "login_success") { %>
-                <p>Bine ati revenit!</p>
-            <% } %>
-        <% } %>
-
-        <% if(!locals.utilizator) { %>
-            <form id="form_login" method="post" class="date form-group" action="/login" enctype="multipart/form-data">
-                <p>
-                    <label>
-                        Username: <input type="text" name="username" id="inp-username" class="form-control"
-                                         value="prof<%= Math.floor(Math.random() * 100000) %>" required
-                                         pattern="[A-Za-z0-9]+">
-                    </label>
-                </p>
-                <p>
-                    <label>
-                        Parola: <input id="parl" class="form-control" type="password" required name="parola" value="">
-                    </label>
-                </p>
-                <p>
-                    <input type="submit" class="btn btn-success" value="Login">
-                </p>
-            </form>
-        <% } %>
-
         <p>Aici puteți găsi tot ceea ce doriți. În materie de literatură!</p>
 
         <ol>
