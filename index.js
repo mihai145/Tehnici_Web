@@ -250,8 +250,8 @@ app.get("/cod_mail/:token1_2/:username", (req, res) => {
 app.post("/login", (req, res) => {
     const formular = new formidable.IncomingForm();
     formular.parse(req, (err, campuriText, campuriFisier) => {
-        const parola_criptata = crypto.scryptSync(campuriText.parola, salt, 64).toString('hex');
-        const query_select = `select * from utilizatori where username='${campuriText.username}' and parola='${parola_criptata}'`;
+        const parola_criptata = crypto.scryptSync(campuriText.parola_login, salt, 64).toString('hex');
+        const query_select = `select * from utilizatori where username='${campuriText.username_login}' and parola='${parola_criptata}'`;
         client.query(query_select, (err, query_res) => {
             if (err) {
                 console.log(err);
@@ -298,7 +298,7 @@ app.post("/delete_cont", (req, res) => {
                     if (err_2) {
                         res.redirect("/index?result=eroare_bd");
                     } else {
-                        trimiteMail(req.session.utilizator.email, `Terminare cont`, `La revedere, ${req.session.utilizator.nume}`, `Sorry to see you go!`, []);
+                        trimiteMail(req.session.utilizator.email, `Terminare cont`, '', `La revedere, ${req.session.utilizator.nume}. <br/> Sorry to see you go!`, []);
                         req.session.destroy();
                         res.locals.utilizator = null;
                         res.redirect("/index?result=success");
