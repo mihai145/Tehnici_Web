@@ -6,6 +6,8 @@ const path = require('path');
 const ejs = require('ejs');
 const sass = require('sass');
 const sharp = require('sharp');
+const bodyParser = require('body-parser');
+const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 const formidable = require('formidable');
 const crypto = require('crypto');
@@ -89,7 +91,7 @@ function getIp(req) {//pentru Heroku
 }
 
 const sterge_accesari_vechi = () => {
-    const queryDelete = `delete from accesari where now()-data_accesare >= interval '10 minutes'`;
+    const queryDelete = `delete from accesari where now()-data_accesare >= interval '8 minutes'`;
     client.query(queryDelete, (err, res) => {
         if (err) {
             console.log(err);
@@ -98,7 +100,7 @@ const sterge_accesari_vechi = () => {
 };
 setInterval(() => {
     sterge_accesari_vechi();
-}, 10 * 60 * 1000);
+}, 8 * 60 * 1000);
 
 app.get("/*", (req, res, next) => {
     const id_utiliz = (req.session.utilizator) ? req.session.utilizator.id : null;
@@ -135,7 +137,7 @@ const trimiteMail = async (email, subiect, mesajText, mesajHtml, atasamente = []
 }
 
 app.get(["/", "/index", "/home"], (req, res) => {
-    const query_select = `select username, nume, prenume, culoare_chat from utilizatori where id in (select distinct user_id from accesari where now()-data_accesare <= interval '5 minutes')`;
+    const query_select = `select username, nume, prenume, culoare_chat from utilizatori where id in (select distinct user_id from accesari where now()-data_accesare <= interval '8 minutes')`;
     client.query(query_select, (err_1, resQuery) => {
         if (err_1) {
             console.log(err_1);
@@ -300,7 +302,7 @@ app.post("/inreg", (req, res) => {
     });
 });
 
-const update_profile = (campuriText, criptareParola, req, res) => {
+const update_profile = (campuriText, criptareParola, req, res, changes) => {
     const queryUpdate = `update utilizatori set nume='${campuriText.nume}', prenume='${campuriText.prenume}', email='${campuriText.email}', culoare_chat='${campuriText.culoare_chat}', telefon='${campuriText.telefon}' where parola='${criptareParola}' and username='${campuriText.username}'`;
     client.query(queryUpdate, function (err, rez) {
         if (err) {
@@ -313,11 +315,34 @@ const update_profile = (campuriText, criptareParola, req, res) => {
             return;
         }
 
+        if (req.session.utilizator.nume !== campuriText.nume) {
+            changes.push("numele");
+        }
+        if (req.session.utilizator.prenume !== campuriText.prenume) {
+            changes.push("prenumele");
+        }
+        if (req.session.utilizator.email !== campuriText.email) {
+            changes.push("emailul");
+        }
+        if (req.session.utilizator.culoare_chat !== campuriText.culoare_chat) {
+            changes.push("culoarea de chat");
+        }
+        if (req.session.utilizator.telefon !== campuriText.telefon) {
+            changes.push("telefonul");
+        }
+
         req.session.utilizator.nume = campuriText.nume;
         req.session.utilizator.prenume = campuriText.prenume;
         req.session.utilizator.email = campuriText.email;
         req.session.utilizator.culoare_chat = campuriText.culoare_chat;
         req.session.utilizator.telefon = campuriText.telefon;
+
+        let mesaj = "Editarile s-au efectuat cu succes! Ati schimbat urmatoarele: <br/><ul>";
+        for (const camp of changes) {
+            mesaj += `<li>${camp}</li>`;
+        }
+        mesaj += "</ul>.";
+        trimiteMail(req.session.utilizator.email, 'Editare detalii cont', '', mesaj, []);
 
         res.render("pagini/profil", {mesaj: "Update-ul s-a realizat cu succes."});
     });
@@ -334,7 +359,7 @@ app.post("/profil", function (req, res) {
         const criptareParola = crypto.scryptSync(campuriText.parola, salt, 64).toString('hex');
 
         if (campuriFisier.poza.size === 0) {
-            update_profile(campuriText, criptareParola, req, res);
+            update_profile(campuriText, criptareParola, req, res, []);
         } else {
             const oldPath = campuriFisier.poza._writeStream.path;
             const newPath = path.join(__dirname, 'poze_uploadate', `${campuriText.username}`) + "/poza.jpg";
@@ -344,12 +369,37 @@ app.post("/profil", function (req, res) {
                 if (err) {
                     console.log(err);
                 }
-                update_profile(campuriText, criptareParola, req, res);
+                update_profile(campuriText, criptareParola, req, res, ["imaginea de profil"]);
             });
         }
     });
 });
 
+app.post("/promoveaza", urlencodedParser, (req, res) => {
+    if(!req.session.utilizator || req.session.utilizator.rol !== "admin") {
+        res.redirect("/useri");
+        return;
+    }
+    client.query(`update utilizatori set rol='admin' where id='${req.body.id}'`, (err, resQuery) => {
+        if(err) {
+            console.log(err);
+        }
+        res.redirect("/useri");
+    });
+});
+
+app.post("/retrogradeaza", urlencodedParser, (req, res) => {
+    if(!req.session.utilizator || req.session.utilizator.rol !== "admin") {
+        res.redirect("/useri");
+        return;
+    }
+    client.query(`update utilizatori set rol='comun' where id='${req.body.id}'`, (err, resQuery) => {
+        if(err) {
+            console.log(err);
+        }
+        res.redirect("/useri");
+    });
+});
 
 app.get("/cod_mail/:token1_2/:username", (req, res) => {
     const comanda_lookup = `SELECT * from utilizatori where username='${req.params["username"]}'`;
@@ -450,7 +500,6 @@ app.post("/delete_cont", (req, res) => {
 app.get("/useri", (req, res) => {
     if (req.session.utilizator && req.session.utilizator.rol === "admin") {
         client.query("select * from utilizatori", (err, resQuery) => {
-            console.log(err);
             res.render("pagini/useri", {
                 useri: resQuery.rows
             });

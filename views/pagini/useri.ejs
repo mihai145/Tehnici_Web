@@ -23,10 +23,11 @@
                 <th>Prenume</th>
                 <th>Data</th>
                 <th>Rol</th>
+                <th>Comanda</th>
             </tr>
 
             <% for (var i = 0; i < useri.length; i++) {
-            if(useri[i].rol == "comun"){
+            if(useri[i].username != locals.utilizator.username){
             %>
                 <tr>
                     <td><%= useri[i].id %></td>
@@ -39,6 +40,19 @@
                     %>
                     <td><%= sir_data %></td>
                     <td><%= useri[i].rol %></td>
+                    <td>
+                        <% if(useri[i].rol === "comun") { %>
+                        <form method="post" action="/promoveaza">
+                            <input type="text" name="id" value="<%- useri[i].id %>" hidden>
+                            <button type="submit" class="btn btn-success">Promoveaza</button>
+                        </form>
+                        <% } else { %>
+                        <form method="post" action="/retrogradeaza">
+                            <input type="text" name="id" value="<%- useri[i].id %>" hidden>
+                            <button type="submit" class="btn btn-danger">Retrogradeaza</button>
+                        </form>
+                        <% } %>
+                    </td>
                 </tr>
 
             <% } %>
