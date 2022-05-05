@@ -42,15 +42,15 @@
                     <td><%= useri[i].rol %></td>
                     <td>
                         <% if(useri[i].rol === "comun") { %>
-                        <form method="post" action="/promoveaza">
-                            <input type="text" name="id" value="<%- useri[i].id %>" hidden>
-                            <button type="submit" class="btn btn-success">Promoveaza</button>
-                        </form>
+                            <form method="post" action="/promoveaza">
+                                <input type="text" name="id" value="<%- useri[i].id %>" hidden>
+                                <button type="submit" class="btn btn-success">Promoveaza</button>
+                            </form>
                         <% } else { %>
-                        <form method="post" action="/retrogradeaza">
-                            <input type="text" name="id" value="<%- useri[i].id %>" hidden>
-                            <button type="submit" class="btn btn-danger">Retrogradeaza</button>
-                        </form>
+                            <form method="post" action="/retrogradeaza">
+                                <input type="text" name="id" value="<%- useri[i].id %>" hidden>
+                                <button type="submit" class="btn btn-danger">Retrogradeaza</button>
+                            </form>
                         <% } %>
                     </td>
                 </tr>

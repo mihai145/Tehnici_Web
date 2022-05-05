@@ -5,6 +5,11 @@
       <excludeFolder url="file://$MODULE_DIR$/temp" />
       <excludeFolder url="file://$MODULE_DIR$/.tmp" />
       <excludeFolder url="file://$MODULE_DIR$/tmp" />
+      <excludeFolder url="file://$MODULE_DIR$/poze_uploadate/c" />
+      <excludeFolder url="file://$MODULE_DIR$/poze_uploadate/d" />
+      <excludeFolder url="file://$MODULE_DIR$/poze_uploadate/prof61709" />
+      <excludeFolder url="file://$MODULE_DIR$/poze_uploadate/r" />
+      <excludeFolder url="file://$MODULE_DIR$/poze_uploadate/y" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

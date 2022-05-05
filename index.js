@@ -7,7 +7,7 @@ const ejs = require('ejs');
 const sass = require('sass');
 const sharp = require('sharp');
 const bodyParser = require('body-parser');
-const urlencodedParser = bodyParser.urlencoded({ extended: false });
+const urlencodedParser = bodyParser.urlencoded({extended: false});
 
 const formidable = require('formidable');
 const crypto = require('crypto');
@@ -104,8 +104,8 @@ setInterval(() => {
 
 app.get("/*", (req, res, next) => {
     const id_utiliz = (req.session.utilizator) ? req.session.utilizator.id : null;
-    const queryInsert = `insert into accesari (ip, user_id, pagina) values ('${getIp(req)}', ${id_utiliz}, '${req.url}')`;
-    client.query(queryInsert, (err, resQuery) => {
+    const queryInsert = `insert into accesari (ip, user_id, pagina) values ('${getIp(req)}', ${id_utiliz}, $1::text)`;
+    client.query(queryInsert, [req.url], (err, resQuery) => {
         if (err) {
             console.log(err);
         }
@@ -176,7 +176,7 @@ app.get("/produse", (req, res) => {
 });
 
 app.get("/produs/:id", (req, res) => {
-    client.query(`select * from carti where id=${req.params["id"]}`, (err, queryRes) => {
+    client.query(`select * from carti where id= $1::text`, [req.params["id"]], (err, queryRes) => {
         res.render("pagini/produs", {
             prod: queryRes.rows[0],
         })
@@ -257,8 +257,8 @@ app.post("/inreg", (req, res) => {
                             err: eroare
                         });
                     } else {
-                        const comanda_inserare = `insert into utilizatori (username, nume, prenume, parola, email, culoare_chat, telefon) values ('${campuriText.username}','${campuriText.nume}','${campuriText.prenume}','${parola_criptata}','${campuriText.email}','${campuriText.culoare_chat}', '${campuriText.telefon}') RETURNING data_adaugare`;
-                        client.query(comanda_inserare, (err_1, res_1) => {
+                        const comanda_inserare = `insert into utilizatori (username, nume, prenume, parola, email, culoare_chat, telefon) values ($1::text, $2::text, $3::text,'${parola_criptata}', $4::text, $5::text, $6::text) RETURNING data_adaugare`;
+                        client.query(comanda_inserare, [campuriText.username, campuriText.nume, campuriText.prenume, campuriText.email, campuriText.culoare_chat, campuriText.telefon], (err_1, res_1) => {
                             if (err_1) {
                                 console.log(err_1);
                                 res.render("pagini/inregistrare", {
@@ -272,8 +272,8 @@ app.post("/inreg", (req, res) => {
                                     token += String.fromCharCode(Math.floor(Math.random() * 26) + "a".charCodeAt(0));
                                 }
 
-                                const comanda_inserare_token = `update utilizatori set cod='${token}' where username='${campuriText.username}'`;
-                                client.query(comanda_inserare_token, (err_2, res_2) => {
+                                const comanda_inserare_token = `update utilizatori set cod='${token}' where username= $1::text`;
+                                client.query(comanda_inserare_token, [campuriText.username], (err_2, res_2) => {
                                     if (err_2) {
                                         console.log(err_2);
                                         res.render("pagini/inregistrare", {
@@ -303,8 +303,8 @@ app.post("/inreg", (req, res) => {
 });
 
 const update_profile = (campuriText, criptareParola, req, res, changes) => {
-    const queryUpdate = `update utilizatori set nume='${campuriText.nume}', prenume='${campuriText.prenume}', email='${campuriText.email}', culoare_chat='${campuriText.culoare_chat}', telefon='${campuriText.telefon}' where parola='${criptareParola}' and username='${campuriText.username}'`;
-    client.query(queryUpdate, function (err, rez) {
+    const queryUpdate = `update utilizatori set nume=$1::text, prenume=$2::text, email=$3::text, culoare_chat=$4::text, telefon=$5::text where parola='${criptareParola}' and username=$6::text`;
+    client.query(queryUpdate, [campuriText.nume, campuriText.prenume, campuriText.email, campuriText.culoare_chat, campuriText.telefon, campuriText.username], function (err, rez) {
         if (err) {
             console.log(err);
             res.render("pagini/eroare_generala", {text: "Eroare baza date. Incercati mai tarziu."});
@@ -376,12 +376,12 @@ app.post("/profil", function (req, res) {
 });
 
 app.post("/promoveaza", urlencodedParser, (req, res) => {
-    if(!req.session.utilizator || req.session.utilizator.rol !== "admin") {
+    if (!req.session.utilizator || req.session.utilizator.rol !== "admin") {
         res.redirect("/useri");
         return;
     }
-    client.query(`update utilizatori set rol='admin' where id='${req.body.id}'`, (err, resQuery) => {
-        if(err) {
+    client.query(`update utilizatori set rol='admin' where id=$1::text`, [req.body.id], (err, resQuery) => {
+        if (err) {
             console.log(err);
         }
         res.redirect("/useri");
@@ -389,12 +389,12 @@ app.post("/promoveaza", urlencodedParser, (req, res) => {
 });
 
 app.post("/retrogradeaza", urlencodedParser, (req, res) => {
-    if(!req.session.utilizator || req.session.utilizator.rol !== "admin") {
+    if (!req.session.utilizator || req.session.utilizator.rol !== "admin") {
         res.redirect("/useri");
         return;
     }
-    client.query(`update utilizatori set rol='comun' where id='${req.body.id}'`, (err, resQuery) => {
-        if(err) {
+    client.query(`update utilizatori set rol='comun' where id=$1::text`, [req.body.id], (err, resQuery) => {
+        if (err) {
             console.log(err);
         }
         res.redirect("/useri");
@@ -402,8 +402,8 @@ app.post("/retrogradeaza", urlencodedParser, (req, res) => {
 });
 
 app.get("/cod_mail/:token1_2/:username", (req, res) => {
-    const comanda_lookup = `SELECT * from utilizatori where username='${req.params["username"]}'`;
-    client.query(comanda_lookup, (err, queryRes) => {
+    const comanda_lookup = `SELECT * from utilizatori where username=$1::text`;
+    client.query(comanda_lookup, [req.params["username"]], (err, queryRes) => {
         if (err) {
             res.render("pagini/token", {
                 mesaj: "Eroare baza de date!"
@@ -411,7 +411,7 @@ app.get("/cod_mail/:token1_2/:username", (req, res) => {
         } else {
             const [token_1, insert_time] = req.params["token1_2"].split("-");
             if (token_1 === queryRes.rows[0].cod && insert_time == queryRes.rows[0].data_adaugare.getTime()) {
-                client.query(`update utilizatori set confirmat_mail='true' where username='${req.params["username"]}'`, (err_1, queryRes_1) => {
+                client.query(`update utilizatori set confirmat_mail='true' where username=$1::text`, [req.params["username"]], (err_1, queryRes_1) => {
                     console.log(err_1);
                     if (err_1) {
                         res.render("pagini/token", {
@@ -436,8 +436,8 @@ app.post("/login", (req, res) => {
     const formular = new formidable.IncomingForm();
     formular.parse(req, (err, campuriText, campuriFisier) => {
         const parola_criptata = crypto.scryptSync(campuriText.parola_login, salt, 64).toString('hex');
-        const query_select = `select * from utilizatori where username='${campuriText.username_login}' and parola='${parola_criptata}'`;
-        client.query(query_select, (err, query_res) => {
+        const query_select = `select * from utilizatori where username= $1::text and parola='${parola_criptata}'`;
+        client.query(query_select, [campuriText.username_login], (err, query_res) => {
             if (err) {
                 console.log(err);
                 res.redirect("/index?result=eroare_bd");
@@ -472,19 +472,27 @@ app.get("/logout", (req, res) => {
     res.render("pagini/logout");
 });
 
+const delete_folder = (nume) => {
+    if (fs.existsSync(path.join(__dirname, 'poze_uploadate', nume))) {
+        fs.rmSync(path.join(__dirname, 'poze_uploadate', nume), {recursive: true, force: true});
+    }
+}
+
 app.post("/delete_cont", (req, res) => {
     const formular = new formidable.IncomingForm();
     formular.parse(req, (err, campuriText) => {
         const parola_criptata = crypto.scryptSync(campuriText.parola, salt, 64).toString('hex');
-        client.query(`select * from utilizatori where username='${req.session.utilizator.username}' and parola='${parola_criptata}'`, (err_1, res_1) => {
+        client.query(`select * from utilizatori where username=$1::text and parola='${parola_criptata}'`, [req.session.utilizator.username], (err_1, res_1) => {
             if (err_1) {
                 res.redirect("/index?result=eroare_bd");
             } else if (res_1.rows.length === 1) {
-                client.query(`delete from utilizatori where username='${req.session.utilizator.username}'`, (err_2, res_2) => {
+                client.query(`delete from utilizatori where username=$1::text`, [req.session.utilizator.username], (err_2, res_2) => {
+                    console.log(err_2);
                     if (err_2) {
                         res.redirect("/index?result=eroare_bd");
                     } else {
                         trimiteMail(req.session.utilizator.email, `Terminare cont`, '', `La revedere, ${req.session.utilizator.nume}. <br/> Sorry to see you go!`, []);
+                        delete_folder(req.session.utilizator.username);
                         req.session.destroy();
                         res.locals.utilizator = null;
                         res.redirect("/index?result=success");
@@ -510,13 +518,21 @@ app.get("/useri", (req, res) => {
 });
 
 app.post("/sterge_utiliz", (req, res) => {
+    if (!req.session.utilizator || req.session.utilizator.rol !== "admin") {
+        res.redirect("/useri");
+        return;
+    }
     const formular = new formidable.IncomingForm();
     formular.parse(req, (err, campuriText, campuriFisier) => {
-        const query_delete = `delete from utilizatori where id=${campuriText.id_utiliz}`;
+        const query_delete = `delete from utilizatori where id=${campuriText.id_utiliz} RETURNING username`;
         client.query(query_delete, (err_1, res_1) => {
-            console.log(err);
+            if (err_1) {
+                console.log(err_1);
+            } else {
+                delete_folder(res_1.rows[0].username);
+            }
             res.redirect("/useri");
-        })
+        });
     });
 });
 
