@@ -40,3 +40,8 @@
 #toggle-theme {
     margin-bottom: var(--section-padding);
 }
+
+.profil {
+    display: flex;
+    flex-direction: column;
+}

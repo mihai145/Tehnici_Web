@@ -2,6 +2,7 @@ const express = require('express');
 app = express();
 
 const fs = require('fs');
+const path = require('path');
 const ejs = require('ejs');
 const sass = require('sass');
 const sharp = require('sharp');
@@ -44,6 +45,15 @@ const obGlobal = {
     tipuriCarti: null,
     emailServer: 'magazinulcartianultw@gmail.com'
 }
+
+foldere = ["temp", "poze_uploadate"];
+for (let folder of foldere) {
+    const cale = path.join(__dirname, folder);
+    if (!fs.existsSync(cale)) {
+        fs.mkdirSync(cale);
+    }
+}
+
 /* Initializare tipuri carti */
 client.query("select * from unnest(enum_range(null::tip_carti))", (err, tipuriRes) => {
     if (err) {
@@ -57,11 +67,47 @@ client.query("select * from unnest(enum_range(null::tip_carti))", (err, tipuriRe
 app.set("view engine", "ejs");
 /* Static */
 app.use("/resurse", express.static(__dirname + "/resurse"));
+app.use("/poze_uploadate", express.static(__dirname + "/poze_uploadate"));
 
 /* Tipuri carti */
 app.use("/*", (req, res, next) => {
     res.locals.tipuriCarti = obGlobal.tipuriCarti;
     res.locals.utilizator = req.session.utilizator;
+    next();
+});
+
+function getIp(req) {//pentru Heroku
+    var ip = req.headers["x-forwarded-for"];//ip-ul userului pentru care este forwardat mesajul
+    if (ip) {
+        let vect = ip.split(",");
+        return vect[vect.length - 1];
+    } else if (req.ip) {
+        return req.ip;
+    } else {
+        return req.connection.remoteAddress;
+    }
+}
+
+const sterge_accesari_vechi = () => {
+    const queryDelete = `delete from accesari where now()-data_accesare >= interval '10 minutes'`;
+    client.query(queryDelete, (err, res) => {
+        if (err) {
+            console.log(err);
+        }
+    });
+};
+setInterval(() => {
+    sterge_accesari_vechi();
+}, 10 * 60 * 1000);
+
+app.get("/*", (req, res, next) => {
+    const id_utiliz = (req.session.utilizator) ? req.session.utilizator.id : null;
+    const queryInsert = `insert into accesari (ip, user_id, pagina) values ('${getIp(req)}', ${id_utiliz}, '${req.url}')`;
+    client.query(queryInsert, (err, resQuery) => {
+        if (err) {
+            console.log(err);
+        }
+    });
     next();
 });
 
@@ -89,11 +135,19 @@ const trimiteMail = async (email, subiect, mesajText, mesajHtml, atasamente = []
 }
 
 app.get(["/", "/index", "/home"], (req, res) => {
-    res.render("pagini/index", {
-        ip: req.ip,
-        imagini_galerie_statica: imaginiFereastraTimp(),    /* filtram dupa timp */
-        imagini_galerie_animata: obGlobal.obImagini.imagini,         /* trimitem toate imaginile */
-        mesaj_login: req.query["result"],                      /* rezultatul logarii daca este cazul */
+    const query_select = `select username, nume, prenume, culoare_chat from utilizatori where id in (select distinct user_id from accesari where now()-data_accesare <= interval '5 minutes')`;
+    client.query(query_select, (err_1, resQuery) => {
+        if (err_1) {
+            console.log(err_1);
+        } else {
+            res.render("pagini/index", {
+                ip: req.ip,
+                imagini_galerie_statica: imaginiFereastraTimp(),        /* filtram dupa timp */
+                imagini_galerie_animata: obGlobal.obImagini.imagini,    /* trimitem toate imaginile */
+                mesaj_login: req.query["result"],                       /* rezultatul logarii daca este cazul */
+                useri_online: resQuery.rows,
+            });
+        }
     });
 });
 
@@ -160,6 +214,10 @@ app.post("/inreg", (req, res) => {
             eroare += "Email invalid!\n";
         }
 
+        if (campuriFisier.poza.size === 0) {
+            eroare += "Lipsa poza!\n";
+        }
+
         if (eroare !== "") {
             res.render("pagini/inregistrare", {
                 err: eroare
@@ -167,54 +225,131 @@ app.post("/inreg", (req, res) => {
             return;
         }
 
-        const query_utilizator = `select username from utilizatori where username='${campuriText.username}'`;
-        client.query(query_utilizator, (err_0, res_0) => {
-            if (err_0) {
-                console.log(err);
-                res.render("pagini/inregistrare", {
-                    err: "Eroare baza de date"
-                });
-            } else if (res_0.rows.length !== 0) {
-                eroare += "Username-ul este deja folosit\n";
-                res.render("pagini/inregistrare", {
-                    err: eroare
-                });
-            } else {
-                const comanda_inserare = `insert into utilizatori (username, nume, prenume, parola, email, culoare_chat, telefon) values ('${campuriText.username}','${campuriText.nume}','${campuriText.prenume}','${parola_criptata}','${campuriText.email}','${campuriText.culoare_chat}', '${campuriText.telefon}') RETURNING data_adaugare`;
-                client.query(comanda_inserare, (err_1, res_1) => {
-                    if (err_1) {
-                        console.log(err_1);
+        const oldPath = campuriFisier.poza._writeStream.path;
+        if (!fs.existsSync(path.join(__dirname, 'poze_uploadate', `${campuriText.username}`))) {
+            fs.mkdirSync(path.join(__dirname, 'poze_uploadate', `${campuriText.username}`));
+            const newPath = path.join(__dirname, 'poze_uploadate', `${campuriText.username}`) + "/poza.jpg";
+            const rawData = fs.readFileSync(oldPath);
+
+            fs.writeFile(newPath, rawData, function (err) {
+                if (err) {
+                    eroare += "Eroare la incarcarea pozei de profil!\n";
+                }
+                if (eroare !== "") {
+                    res.render("pagini/inregistrare", {
+                        err: eroare
+                    });
+                    return;
+                }
+
+                const query_utilizator = `select username from utilizatori where username='${campuriText.username}'`;
+                client.query(query_utilizator, (err_0, res_0) => {
+                    if (err_0) {
+                        console.log(err);
                         res.render("pagini/inregistrare", {
                             err: "Eroare baza de date"
                         });
+                    } else if (res_0.rows.length !== 0) {
+                        eroare += "Username-ul este deja folosit\n";
+                        res.render("pagini/inregistrare", {
+                            err: eroare
+                        });
                     } else {
-                        const data_adaugare = res_1.rows[0].data_adaugare;
-
-                        let token = "";
-                        for (let i = 1; i <= 50; i++) {
-                            token += String.fromCharCode(Math.floor(Math.random() * 26) + "a".charCodeAt(0));
-                        }
-
-                        const comanda_inserare_token = `update utilizatori set cod='${token}' where username='${campuriText.username}'`;
-                        client.query(comanda_inserare_token, (err_2, res_2) => {
-                            if (err_2) {
-                                console.log(err_2);
+                        const comanda_inserare = `insert into utilizatori (username, nume, prenume, parola, email, culoare_chat, telefon) values ('${campuriText.username}','${campuriText.nume}','${campuriText.prenume}','${parola_criptata}','${campuriText.email}','${campuriText.culoare_chat}', '${campuriText.telefon}') RETURNING data_adaugare`;
+                        client.query(comanda_inserare, (err_1, res_1) => {
+                            if (err_1) {
+                                console.log(err_1);
                                 res.render("pagini/inregistrare", {
                                     err: "Eroare baza de date"
                                 });
                             } else {
-                                res.render("pagini/inregistrare", {
-                                    raspuns: "Datele au fost introduse"
+                                const data_adaugare = res_1.rows[0].data_adaugare;
+
+                                let token = "";
+                                for (let i = 1; i <= 50; i++) {
+                                    token += String.fromCharCode(Math.floor(Math.random() * 26) + "a".charCodeAt(0));
+                                }
+
+                                const comanda_inserare_token = `update utilizatori set cod='${token}' where username='${campuriText.username}'`;
+                                client.query(comanda_inserare_token, (err_2, res_2) => {
+                                    if (err_2) {
+                                        console.log(err_2);
+                                        res.render("pagini/inregistrare", {
+                                            err: "Eroare baza de date"
+                                        });
+                                    } else {
+                                        res.render("pagini/inregistrare", {
+                                            raspuns: "Datele au fost introduse"
+                                        });
+                                        trimiteMail(campuriText.email, `Salut, stimate ${campuriText.nume}`, "Bun venit!", `Username-ul tau este ${campuriText.username} pe site-ul <strong><i><em>https://afternoon-sea-55888.herokuapp.com</em></i></strong>. <br/> Pentru a confirma emailul, accesati <a href='https://afternoon-sea-55888.herokuapp.com/cod_mail/${token}-${data_adaugare.getTime()}/${campuriText.username}'>acest link</a>`, []);
+                                    }
                                 });
-                                trimiteMail(campuriText.email, `Salut, stimate ${campuriText.nume}`, "Bun venit!", `Username-ul tau este ${campuriText.username} pe site-ul <strong><i><em>https://afternoon-sea-55888.herokuapp.com</em></i></strong>. <br/> Pentru a confirma emailul, accesati <a href='https://afternoon-sea-55888.herokuapp.com/cod_mail/${token}-${data_adaugare.getTime()}/${campuriText.username}'>acest link</a>`, []);
                             }
                         });
                     }
                 });
+            });
+        } else {
+            eroare += "Username-ul exista deja!\n";
+            if (eroare !== "") {
+                res.render("pagini/inregistrare", {
+                    err: eroare
+                });
             }
-        });
+        }
     });
 });
+
+const update_profile = (campuriText, criptareParola, req, res) => {
+    const queryUpdate = `update utilizatori set nume='${campuriText.nume}', prenume='${campuriText.prenume}', email='${campuriText.email}', culoare_chat='${campuriText.culoare_chat}', telefon='${campuriText.telefon}' where parola='${criptareParola}' and username='${campuriText.username}'`;
+    client.query(queryUpdate, function (err, rez) {
+        if (err) {
+            console.log(err);
+            res.render("pagini/eroare_generala", {text: "Eroare baza date. Incercati mai tarziu."});
+            return;
+        }
+        if (rez.rowCount === 0) {
+            res.render("pagini/profil", {mesaj: "Update-ul nu s-a realizat. Verificati parola introdusa."});
+            return;
+        }
+
+        req.session.utilizator.nume = campuriText.nume;
+        req.session.utilizator.prenume = campuriText.prenume;
+        req.session.utilizator.email = campuriText.email;
+        req.session.utilizator.culoare_chat = campuriText.culoare_chat;
+        req.session.utilizator.telefon = campuriText.telefon;
+
+        res.render("pagini/profil", {mesaj: "Update-ul s-a realizat cu succes."});
+    });
+}
+
+app.post("/profil", function (req, res) {
+    if (!req.session.utilizator) {
+        res.render("pagini/eroare_generala", {text: "Nu sunteti logat."});
+        return;
+    }
+    const formular = new formidable.IncomingForm();
+
+    formular.parse(req, function (err, campuriText, campuriFisier) {
+        const criptareParola = crypto.scryptSync(campuriText.parola, salt, 64).toString('hex');
+
+        if (campuriFisier.poza.size === 0) {
+            update_profile(campuriText, criptareParola, req, res);
+        } else {
+            const oldPath = campuriFisier.poza._writeStream.path;
+            const newPath = path.join(__dirname, 'poze_uploadate', `${campuriText.username}`) + "/poza.jpg";
+            const rawData = fs.readFileSync(oldPath);
+
+            fs.writeFile(newPath, rawData, function (err) {
+                if (err) {
+                    console.log(err);
+                }
+                update_profile(campuriText, criptareParola, req, res);
+            });
+        }
+    });
+});
+
 
 app.get("/cod_mail/:token1_2/:username", (req, res) => {
     const comanda_lookup = `SELECT * from utilizatori where username='${req.params["username"]}'`;
@@ -262,6 +397,7 @@ app.post("/login", (req, res) => {
                         res.redirect("/index?result=mail_neconfirmat");
                     } else {
                         req.session.utilizator = {
+                            id: query_res.rows[0].id,
                             nume: query_res.rows[0].nume,
                             prenume: query_res.rows[0].prenume,
                             username: query_res.rows[0].username,
@@ -308,6 +444,30 @@ app.post("/delete_cont", (req, res) => {
                 res.redirect("/index?result=username_parola_incorecta");
             }
         });
+    });
+});
+
+app.get("/useri", (req, res) => {
+    if (req.session.utilizator && req.session.utilizator.rol === "admin") {
+        client.query("select * from utilizatori", (err, resQuery) => {
+            console.log(err);
+            res.render("pagini/useri", {
+                useri: resQuery.rows
+            });
+        });
+    } else {
+        randeazaEroare(res, 403);
+    }
+});
+
+app.post("/sterge_utiliz", (req, res) => {
+    const formular = new formidable.IncomingForm();
+    formular.parse(req, (err, campuriText, campuriFisier) => {
+        const query_delete = `delete from utilizatori where id=${campuriText.id_utiliz}`;
+        client.query(query_delete, (err_1, res_1) => {
+            console.log(err);
+            res.redirect("/useri");
+        })
     });
 });
 
@@ -458,7 +618,3 @@ setTimeout(() => {
         console.log("Started");
     });
 }, 3500);
-
-// app.listen(8080, callback = () => {
-//     console.log("Serverul asculta pe portul 8080...");
-// });

@@ -68,18 +68,32 @@
         </h2>
 
         <!--Buton toggle theme-->
-        <button id="toggle-theme">Schimba tema site-ului!</button>
+        <div class="row">
+            <div class="col-12 col-lg-6">
+                <button id="toggle-theme">Schimba tema site-ului!</button>
 
-        <p>Aici puteți găsi tot ceea ce doriți. În materie de literatură!</p>
+                <p>Aici puteți găsi tot ceea ce doriți. În materie de literatură!</p>
 
-        <ol>
-            <li>Literatură clasică</li>
-            <li>Poezie</li>
-            <li>Beletristică</li>
-            <li>SF</li>
-            <li>Istorie</li>
-            <li>Literatură străină</li>
-        </ol>
+                <ol>
+                    <li>Literatură clasică</li>
+                    <li>Poezie</li>
+                    <li>Beletristică</li>
+                    <li>SF</li>
+                    <li>Istorie</li>
+                    <li>Literatură străină</li>
+                </ol>
+            </div>
+
+            <div class="col-12 col-lg-6">
+                <% if(locals.utilizator) { %>
+                    <div class="container mb-3 p-4 profil">
+                        <a href="/profil">Profilul dvs!</a>
+                        <img src="/poze_uploadate/<%- locals.utilizator.username %>/poza.jpg" width="300px"
+                             alt="poza de profil">
+                    </div>
+                <% } %>
+            </div>
+        </div>
 
         <!-- Video-->
         <video width="800" height="450" controls="controls" poster="resurse/imagini/poster-video.jpg" preload="auto">
@@ -234,13 +248,24 @@
             aliquet ultricies eu a lacus. Vestibulum fringilla efficitur facilisis. Suspendisse dignissim feugiat tellus
             sed pellentesque. Suspendisse potenti. Integer sit amet mollis dui. Ut nec sagittis nisl.
             <br/>
-            Phasellus non pellentesque augue. Nullam convallis ante et diam tristique iaculis. Ut viverra nulla elit, et
-            sagittis massa egestas tristique. Pellentesque a auctor lectus. Etiam interdum ex non urna aliquet, ac
-            consectetur velit sodales. Aenean at mauris est. Nam a est maximus, vehicula quam a, porttitor nulla.
-            Suspendisse potenti. Mauris lacinia et est sit amet sodales. Quisque et ligula ut lorem ullamcorper mattis
-            in a velit. Nam rhoncus dignissim nisl, nec sodales est rutrum dapibus. Mauris ut accumsan velit, nec rutrum
-            libero. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
-            Vestibulum magna ligula, gravida nec justo eu, rhoncus venenatis felis.
+        <ul>
+            <% if(locals.useri_online) { %>
+                <table class="table">
+                    <thead>
+                    <td>Prenume</td>
+                    <td>Nume</td>
+                    <td>Username</td>
+                    </thead>
+                    <% for(let u of locals.useri_online) { %>
+                    <tr style="color:<%- u.culoare_chat %>">
+                        <td><%- u.prenume %></td>
+                        <td><%- u.nume %></td>
+                        <td><%- u.username %></td>
+                    </tr>
+                    <% } %>
+                </table>
+            <% } %>
+        </ul>
         </p>
     </section>
 

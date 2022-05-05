@@ -41,6 +41,9 @@
                         <a href="/inregistrare">Inregistrare</a>
                     </li>
                 <% } else { %>
+                    <% if(locals.utilizator.rol === "admin") { %>
+                        <li><a href="/useri">Useri</a></li>
+                    <% } %>
                     <li class="submenu-head">
                         <div class="submenu-label">Salut, <%- locals.utilizator.username %></div>
                         <ul class="submenu">
