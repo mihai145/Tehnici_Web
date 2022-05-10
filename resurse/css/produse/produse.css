@@ -8,7 +8,7 @@ main {
     padding: var(--filter-section-padding);
 }
 
-.container-inp-nume, .container-inp-nr-pag, .container-inp-pret, .container-inp-categorie, .container-inp-gen-literar, .container-butoane {
+.container-inp-nume, .container-inp-autor, .container-inp-nr-pag, .container-inp-pret, .container-inp-categorie, .container-inp-gen-literar, .container-butoane {
     width: 300px;
     margin-bottom: 4px;
     padding: var(--filter-section-padding);

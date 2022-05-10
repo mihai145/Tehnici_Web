@@ -383,7 +383,7 @@ app.post("/promoveaza", urlencodedParser, (req, res) => {
         res.redirect("/useri");
         return;
     }
-    client.query(`update utilizatori set rol='admin' where id=$1::text`, [req.body.id], (err, resQuery) => {
+    client.query(`update utilizatori set rol='admin' where id=${req.body.id}`, (err, resQuery) => {
         if (err) {
             console.log(err);
         }
@@ -396,7 +396,7 @@ app.post("/retrogradeaza", urlencodedParser, (req, res) => {
         res.redirect("/useri");
         return;
     }
-    client.query(`update utilizatori set rol='comun' where id=$1::text`, [req.body.id], (err, resQuery) => {
+    client.query(`update utilizatori set rol='comun' where id=${req.body.id}`, (err, resQuery) => {
         if (err) {
             console.log(err);
         }
