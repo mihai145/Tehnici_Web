@@ -32,7 +32,7 @@
     </p>
     <p>
         <label>
-            Culoare text chat: <select name="culoare_chat" id="sel-culoare" class="form-control">
+            Culoare text chat: <select name="culoare_chat" id="sel-culoare" class="form-control" required>
                 <option value="red" selected>rosu</option>
                 <option value="green">verde</option>
                 <option value="blue">albastru</option>
@@ -41,12 +41,12 @@
     </p>
     <p>
         <label>
-            Telefon: <input type="text" name="telefon" id="inp-telefon" class="form-control" value="+40777123">
+            Telefon: <input type="text" name="telefon" id="inp-telefon" class="form-control" value="+0123456789" pattern="^\+?0[0-9]{9,}$" required>
         </label>
     </p>
     <p>
         <label>
-            Poza: <input type="file" name="poza" class="form-control">
+            Poza: <input type="file" name="poza" class="form-control" required>
         </label>
     </p>
     <p>

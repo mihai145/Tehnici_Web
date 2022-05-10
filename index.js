@@ -176,7 +176,7 @@ app.get("/produse", (req, res) => {
 });
 
 app.get("/produs/:id", (req, res) => {
-    client.query(`select * from carti where id= $1::text`, [req.params["id"]], (err, queryRes) => {
+    client.query(`select * from carti where id=${req.params["id"]}`, (err, queryRes) => {
         res.render("pagini/produs", {
             prod: queryRes.rows[0],
         })
