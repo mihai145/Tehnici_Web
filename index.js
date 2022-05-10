@@ -158,15 +158,18 @@ app.get("/produse", (req, res) => {
         client.query("select distinct unnest(genuri_literare) from carti c", (err2, genuriRes) => {
             client.query("select min(pret) from carti", (err3, minRes) => {
                 client.query("select max(pret) from carti", (err4, maxRes) => {
-                    const restr_tip = (req.query.tip) ? `tip='${req.query.tip}'` : "1=1"
-                    client.query("select * from carti where " + restr_tip, (err, queryRes) => {
-                        res.render("pagini/produse", {
-                            tip: (req.query.tip) ? req.query.tip : "Toate",
-                            produse: queryRes.rows,
-                            optiuni: categRes.rows,
-                            genuri: genuriRes.rows,
-                            min_price: minRes.rows[0].min,
-                            max_price: maxRes.rows[0].max
+                    client.query("select distinct autor from carti", (err3, autoriRes) => {
+                        const restr_tip = (req.query.tip) ? `tip='${req.query.tip}'` : "1=1"
+                        client.query("select * from carti where " + restr_tip, (err, queryRes) => {
+                            res.render("pagini/produse", {
+                                tip: (req.query.tip) ? req.query.tip : "Toate",
+                                produse: queryRes.rows,
+                                optiuni: categRes.rows,
+                                genuri: genuriRes.rows,
+                                autori: autoriRes.rows,
+                                min_price: minRes.rows[0].min,
+                                max_price: maxRes.rows[0].max
+                            });
                         });
                     });
                 });

@@ -32,6 +32,16 @@
                     <label> Titlu: <input type="text" id="inp-nume"></label>
                 </div>
 
+                <div class="container-inp-autor">
+                    Autor: <input list="datalist-autor" id="inp-autor">
+                        <datalist id="datalist-autor">
+                            <option value="toate">Orice</option>
+                            <% for (const aut of locals.autori) { %>
+                                <option value="<%- aut.autor %>"><%- aut.autor %> </option>
+                            <% } %>
+                        </datalist>
+                </div>
+
                 <div class="container-inp-nr-pag"> Numar de pagini:
                     <p><label>Cateva ore (pagini &lt; 100)
                             <input id="i_rad1" name="gr_rad" value="0:100" type="radio"/>
@@ -122,7 +132,7 @@
                             <article class="produs" id="art<%-prod.id%>">
                                 <h3 class="nume">Nume: <a href="/produs/<%- prod.id %>"><span
                                                 class="val-nume"><%- prod.nume %></span></a></h3>
-                                <h4>Autor: <%- prod.autor %> </h4>
+                                <h4>Autor: <span class="val-autor"><%- prod.autor %></span> </h4>
                                 <p>Descriere: <span class="val-descriere"><%- prod.descriere %></span></p>
 
                                 <div id="info-img-container">

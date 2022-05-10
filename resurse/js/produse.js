@@ -40,6 +40,7 @@ window.addEventListener("load", () => {
 
     /* Inputs */
     const inp_name = document.getElementById("inp-nume");
+    const inp_autor = document.getElementById("inp-autor");
     const range_min = document.getElementById("inp-pret-min");
     const range_max = document.getElementById("inp-pret-max");
     const inp_categ = document.getElementById("inp-categorie");
@@ -167,7 +168,11 @@ window.addEventListener("load", () => {
             }
             const cond5 = all_genres;
 
-            if (cond1 && cond2 && cond3 && cond4 && cond5) {
+            /* Autor */
+            const autor_carte = produs.getElementsByClassName("val-autor")[0].innerHTML;
+            const cond6 = (inp_autor.value === "toate" || autor_carte === inp_autor.value);
+
+            if (cond1 && cond2 && cond3 && cond4 && cond5 && cond6) {
                 produs.style.display = "block";
             }
         }
@@ -180,6 +185,7 @@ window.addEventListener("load", () => {
         }
 
         inp_name.value = "";
+        inp_autor.value = "toate";
 
         range_min.value = range_min.min;
         span_range_min.innerHTML = " (" + range_min.min + ") ";
