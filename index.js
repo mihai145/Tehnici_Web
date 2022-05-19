@@ -13,6 +13,10 @@ const formidable = require('formidable');
 const crypto = require('crypto');
 const session = require('express-session');
 const nodemailer = require('nodemailer');
+const helmet = require('helmet');
+
+app.use(helmet.frameguard());
+app.use(["/produse_cos", "/cumpara"], express.json({limit: "2mb"}));
 
 app.use(session({
     secret: 'abcdefg',      //folosit de express session pentru criptarea id-ului de sesiune
@@ -183,6 +187,22 @@ app.get("/produs/:id", (req, res) => {
         res.render("pagini/produs", {
             prod: queryRes.rows[0],
         })
+    });
+});
+
+app.post("/produse_cos", (req, res) => {
+    if(req.body.ids_prod.length === 0) {
+        res.send([]);
+        return;
+    }
+    let querySelect = `select nume, descriere, pret from carti where id in (${req.body.ids_prod.join(',')})`;
+    client.query(querySelect, (err, res_query) => {
+       if(err) {
+           console.log(err);
+           res.send([]);
+       } else {
+           res.send(res_query.rows);
+       }
     });
 });
 

@@ -275,7 +275,6 @@ window.addEventListener("load", () => {
                 iduriProduse = iduriProduse.filter(id => id !== this.value);
             }
 
-            //console.log(iduriProduse.join(","));
             localStorage.setItem("cos_virtual", iduriProduse.join(","));
         }
     }
