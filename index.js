@@ -173,7 +173,7 @@ app.get(["/", "/index", "/home"], (req, res) => {
 
             let nrZile = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
             for(let zi = nrZile[dataCurenta.getMonth()]; zi >= nrZile[dataCurenta.getMonth()] - 6; zi--) {
-                let day = new Date(dataCurenta.getFullYear(), dataCurenta.getMonth(), 1).getDay()
+                let day = new Date(dataCurenta.getFullYear(), dataCurenta.getMonth(), zi).getDay();
                 if(day === 0 || day === 6) {
                     evenimente.push({
                         data: new Date(dataCurenta.getFullYear(), dataCurenta.getMonth(), zi),
