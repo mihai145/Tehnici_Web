@@ -107,7 +107,35 @@ setInterval(() => {
     sterge_accesari_vechi();
 }, 8 * 60 * 1000);
 
+/*
+obiect cu ipurile active
+ip-uri active= cele care au facut o cerere de curand
+cheia e de forma ip|url iar valoarea e un obiect de forma {nr:numar_accesari, data:data_ultimei accesari}
+*/
+let ipuri_active = {};
+
 app.get("/*", (req, res, next) => {
+    let ipReq = getIp(req);
+    let ip_gasit = ipuri_active[ipReq + "|" + req.url];
+    timp_curent = new Date();
+    if (ip_gasit) {
+        if ((timp_curent - ip_gasit.data) < 20 * 1000) { //diferenta e in milisecunde; verific daca prima accesare a fost pana in 20 secunde
+            if (ip_gasit.nr > 10) { //mai mult de 10 cereri
+                res.send("<h1>Prea multe cereri intr-un interval scurt!</h1>");
+                ip_gasit.data = timp_curent
+                return;
+            } else {
+                // ip_gasit.data = timp_curent;
+                ip_gasit.nr++;
+            }
+        } else {
+            ip_gasit.data = timp_curent;
+            ip_gasit.nr = 1; //a trecut suficient timp de la ultima cerere; resetez
+        }
+    } else {
+        ipuri_active[ipReq + "|" + req.url] = {nr: 1, data: timp_curent};
+    }
+
     const id_utiliz = (req.session.utilizator) ? req.session.utilizator.id : null;
     const queryInsert = `insert into accesari (ip, user_id, pagina) values ('${getIp(req)}', ${id_utiliz}, $1::text)`;
     client.query(queryInsert, [req.url], (err, resQuery) => {
@@ -164,7 +192,7 @@ app.get(["/", "/index", "/home"], (req, res) => {
                 text: texteEvenimente[2]
             });
 
-            if(new Date(dataCurenta.getFullYear(), dataCurenta.getMonth(), 1).getDay() === 1) { //prima zi a lunii este o zi de Luni
+            if (new Date(dataCurenta.getFullYear(), dataCurenta.getMonth(), 1).getDay() === 1) { //prima zi a lunii este o zi de Luni
                 evenimente.push({
                     data: new Date(dataCurenta.getFullYear(), dataCurenta.getMonth(), 1),
                     text: "Primul produs gratis"
@@ -172,9 +200,9 @@ app.get(["/", "/index", "/home"], (req, res) => {
             }
 
             let nrZile = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-            for(let zi = nrZile[dataCurenta.getMonth()]; zi >= nrZile[dataCurenta.getMonth()] - 6; zi--) {
+            for (let zi = nrZile[dataCurenta.getMonth()]; zi >= nrZile[dataCurenta.getMonth()] - 6; zi--) {
                 let day = new Date(dataCurenta.getFullYear(), dataCurenta.getMonth(), zi).getDay();
-                if(day === 0 || day === 6) {
+                if (day === 0 || day === 6) {
                     evenimente.push({
                         data: new Date(dataCurenta.getFullYear(), dataCurenta.getMonth(), zi),
                         text: "Reduceri finale"
