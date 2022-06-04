@@ -1,0 +1,5 @@
+.slider {
+    width: 200px;
+    border: 1px solid var(--culoare_text);
+    border-radius: 4px;
+}

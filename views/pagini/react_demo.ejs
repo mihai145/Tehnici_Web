@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+
+<html lang="ro">
+
+<head>
+    <title>Demo react</title>
+    <meta
+            name="keywords"
+            content="demo, react, reactjs"
+    />
+
+    <!--Metainformatii & favico-->
+    <%- include("../fragmente/head.ejs"); %>
+
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="/resurse/js/react_demo.js" crossorigin></script>
+
+    <link type="text/css" href="/resurse/css/react_demo/react_demo.css" rel="stylesheet" />
+</head>
+
+<body>
+
+<!--Header-->
+<%- include("../fragmente/header.ejs"); %>
+
+<main class="container">
+    <div id="react">
+        Se incarca...
+    </div>
+</main>
+
+<!--Footer-->
+<%- include("../fragmente/footer.ejs"); %>
+
+</body>
+</html>

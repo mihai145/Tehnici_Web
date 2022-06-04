@@ -125,7 +125,7 @@ app.get("/*", (req, res, next) => {
                 ip_gasit.data = timp_curent
                 return;
             } else {
-                // ip_gasit.data = timp_curent;
+                // ip_gasit.data = timp_curent; --vreau sa pastrez prima accesare din fereastra de 20 de secunde
                 ip_gasit.nr++;
             }
         } else {
