@@ -14,6 +14,7 @@ const crypto = require('crypto');
 const session = require('express-session');
 const nodemailer = require('nodemailer');
 const helmet = require('helmet');
+var geoip = require('geoip-lite');
 
 app.use(helmet.frameguard());
 app.use(["/produse_cos", "/cumpara"], express.json({limit: "2mb"}));
@@ -146,12 +147,26 @@ app.get(["/", "/index", "/home"], (req, res) => {
         if (err_1) {
             console.log(err_1);
         } else {
+            let evenimente = [];
+
+            let texteEvenimente = ["Eveniment important", "Festivitate", "Prajituri gratis"];
+            const dataCurenta = new Date();
+            for (let i = 0; i < texteEvenimente.length; i++) {
+                evenimente.push({
+                    data: new Date(dataCurenta.getFullYear(), dataCurenta.getMonth(), Math.ceil(Math.random() * 27)),
+                    text: texteEvenimente[i]
+                });
+            }
+            console.log(evenimente)
+
             res.render("pagini/index", {
                 ip: req.ip,
                 imagini_galerie_statica: imaginiFereastraTimp(),        /* filtram dupa timp */
                 imagini_galerie_animata: obGlobal.obImagini.imagini,    /* trimitem toate imaginile */
                 mesaj_login: req.query["result"],                       /* rezultatul logarii daca este cazul */
                 useri_online: resQuery.rows,
+                geolocation: geoip.lookup(getIp(req)),
+                evenimente: evenimente
             });
         }
     });
@@ -191,18 +206,18 @@ app.get("/produs/:id", (req, res) => {
 });
 
 app.post("/produse_cos", (req, res) => {
-    if(req.body.ids_prod.length === 0) {
+    if (req.body.ids_prod.length === 0) {
         res.send([]);
         return;
     }
     let querySelect = `select nume, descriere, pret from carti where id in (${req.body.ids_prod.join(',')})`;
     client.query(querySelect, (err, res_query) => {
-       if(err) {
-           console.log(err);
-           res.send([]);
-       } else {
-           res.send(res_query.rows);
-       }
+        if (err) {
+            console.log(err);
+            res.send([]);
+        } else {
+            res.send(res_query.rows);
+        }
     });
 });
 

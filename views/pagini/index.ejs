@@ -174,22 +174,58 @@
 
     <!--    Sectiunea pentru calendar-->
     <section id="calendar">
-        <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sed accumsan quam. Sed posuere tincidunt
-            pharetra. Nunc elementum, ante id condimentum finibus, ligula erat porta libero, in vehicula ligula leo eget
-            nibh. Sed ut iaculis nisl. Vivamus sollicitudin, sem vel fringilla luctus, quam velit pharetra risus, sit
-            amet tempor eros nisl sed quam. Vivamus dapibus nulla nec sapien porta, eget tempus lorem malesuada.
-            Pellentesque sed lorem urna. Vestibulum eget ultricies massa. Integer fringilla sapien vel mauris consequat,
-            viverra fringilla sem malesuada. Cras imperdiet purus a dui tincidunt, a convallis ex fermentum. Duis mattis
-            ut ipsum eget blandit. Nulla ut condimentum ante, sit amet consectetur eros. Vestibulum vel justo tempor,
-            fermentum urna ut, dignissim lacus.
+        <p>Ora server: <%- new Date().toUTCString() %> </p>
+        <p>Ora utilizator: <span id="ora-utilizator"></span></p>
+        <script>
+            document.getElementById("ora-utilizator").innerHTML = new Date().toUTCString();
+        </script>
+        <p>Locatie utilizator: <%- locals.geolocation %></p>
 
-        <hr class="hr-main"/>
+        <div id="cont-calendar">
+            <div>L</div>
+            <div>Ma</div>
+            <div>Mi</div>
+            <div>J</div>
+            <div>V</div>
+            <div>S</div>
+            <div>D</div>
+            <%
+            nrZile = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+            d = new Date(); //observatie: este data serverului nu a clinetului; codul ejs fiind compilat pe server
+            anCurent = d.getFullYear();
+            lunaCurenta = d.getMonth();
+            if (anCurent % 400 === 0 || (anCurent % 4 === 0 && anCurent % 100 !== 0)) {
+                nrZile = 29;
+            }
+            let nrZileCalendar = nrZile[lunaCurenta]
+            primaZiLuna = new Date(anCurent, lunaCurenta, 1);
+            ultimaZiLuna = new Date(anCurent, lunaCurenta, nrZileCalendar);
+            ziSaptPrimaZiLuna = (primaZiLuna.getDay() - 1 + 7) % 7;
+            ziSaptUltimaZiLuna = (ultimaZiLuna.getDay() - 1 + 7) % 7;
+            for (let i = 0; i < ziSaptPrimaZiLuna;i++){
+            %>
+                <div></div>
+            <% }
 
-        Quisque diam lacus, porttitor nec lobortis at, sagittis sit amet massa. Vivamus suscipit sagittis cursus. Ut
-        at ex felis. Donec laoreet risus ipsum, eget viverra quam rhoncus mollis. Nulla at leo est. Praesent purus
-        quam, ultrices a erat id, malesuada fringilla mi. Nunc rhoncus a mi ac tincidunt. Etiam eget euismod tellus.
-        Pellentesque scelerisque mollis leo vitae mollis.
+            for (let i = 1; i <= nrZileCalendar; i++){
+                var obiectEvenimente = null;
+                if (locals.evenimente) {
+                    obiectEvenimente = locals.evenimente.find(function (elem) {
+                        return elem.data.valueOf() === new Date(anCurent, lunaCurenta, i).valueOf()
+                    });
+                }
+            if(obiectEvenimente) {
+            %>
+                <div class="zi eveniment" title="<%= obiectEvenimente.text %>"><%= i %></div>
+            <%
+            }
+            else {
+            %>
+                <div class="zi"><%= i %></div>
+            <% }
+            } %>
+        </div>
+
     </section>
 
     <!--    Sectiunea pentru anunturi-->
@@ -252,9 +288,11 @@
             <% if(locals.useri_online) { %>
                 <table class="table">
                     <thead>
-                    <td>Prenume</td>
-                    <td>Nume</td>
-                    <td>Username</td>
+                    <tr>
+                        <td>Prenume</td>
+                        <td>Nume</td>
+                        <td>Username</td>
+                    </tr>
                     </thead>
                     <% for(let u of locals.useri_online) { %>
                         <tr style="color:<%- u.culoare_chat %>">
@@ -266,7 +304,6 @@
                 </table>
             <% } %>
         </ul>
-        </p>
     </section>
 
     <!--    Sectiunea pentru info-user-->
