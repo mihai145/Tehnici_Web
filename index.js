@@ -164,6 +164,24 @@ app.get(["/", "/index", "/home"], (req, res) => {
                 text: texteEvenimente[2]
             });
 
+            if(new Date(dataCurenta.getFullYear(), dataCurenta.getMonth(), 1).getDay() === 1) { //prima zi a lunii este o zi de Luni
+                evenimente.push({
+                    data: new Date(dataCurenta.getFullYear(), dataCurenta.getMonth(), 1),
+                    text: "Primul produs gratis"
+                });
+            }
+
+            let nrZile = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+            for(let zi = nrZile[dataCurenta.getMonth()]; zi >= nrZile[dataCurenta.getMonth()] - 6; zi--) {
+                let day = new Date(dataCurenta.getFullYear(), dataCurenta.getMonth(), 1).getDay()
+                if(day === 0 || day === 6) {
+                    evenimente.push({
+                        data: new Date(dataCurenta.getFullYear(), dataCurenta.getMonth(), zi),
+                        text: "Reduceri finale"
+                    });
+                }
+            }
+
             res.render("pagini/index", {
                 ip: req.ip,
                 imagini_galerie_statica: imaginiFereastraTimp(),        /* filtram dupa timp */
