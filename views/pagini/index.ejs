@@ -179,7 +179,7 @@
         <script>
             document.getElementById("ora-utilizator").innerHTML = new Date().toUTCString();
         </script>
-        <p>Locatie utilizator: <%- locals.geolocation %></p>
+        <p>Locatie utilizator: <%- locals.geolocation.country - locals.geolocation.city %></p>
 
         <div id="cont-calendar">
             <div>L</div>

@@ -151,12 +151,19 @@ app.get(["/", "/index", "/home"], (req, res) => {
 
             let texteEvenimente = ["Eveniment important", "Festivitate", "Prajituri gratis"];
             const dataCurenta = new Date();
-            for (let i = 0; i < texteEvenimente.length; i++) {
-                evenimente.push({
-                    data: new Date(dataCurenta.getFullYear(), dataCurenta.getMonth(), Math.ceil(Math.random() * 27)),
-                    text: texteEvenimente[i]
-                });
-            }
+            evenimente.push({
+                data: new Date(dataCurenta.getFullYear(), dataCurenta.getMonth(), 5),
+                text: texteEvenimente[0]
+            });
+            evenimente.push({
+                data: new Date(dataCurenta.getFullYear(), dataCurenta.getMonth(), 10),
+                text: texteEvenimente[1]
+            });
+            evenimente.push({
+                data: new Date(dataCurenta.getFullYear(), dataCurenta.getMonth(), 15),
+                text: texteEvenimente[2]
+            });
+
             console.log(evenimente)
 
             res.render("pagini/index", {
