@@ -163,7 +163,7 @@ app.get(["/", "/index", "/home"], (req, res) => {
                 data: new Date(dataCurenta.getFullYear(), dataCurenta.getMonth(), 15),
                 text: texteEvenimente[2]
             });
-            
+
             res.render("pagini/index", {
                 ip: req.ip,
                 imagini_galerie_statica: imaginiFereastraTimp(),        /* filtram dupa timp */
